@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8"/>
+  <title>Viestintäjärjestelmä</title> 
+  <link href="tyyli.css" rel="StyleSheet" type="text/css" />
+</head>
+<body>
+
+<div>
+
+<p id="uudet">
+Uusimmat viestit:
+</p>
+
+</div> 
+
+<div>
+
+<p id="viestit">
+Kaikki viestit määrätyltä ajalta:
+</p>
+
+</div> 
+
+
+<form id="lomake" name="lomake">
+<fieldset>
+<legend>Lisäys</legend>
+<div>
+
+<label for="nimi">Nimi: </label>
+<input type="text" id="nimi" name="nimi"/>
+
+</div>
+<div>
+
+<label for="viesti">Viesti: </label>
+<input type="text" id="viesti" name="viesti"/>
+
+</div>
+<p><input type="submit" name="laheta" id="laheta" value="Lähetä!" /></p>
+</fieldset>
+
+</form>
+
+<div>
+
+<p>
+Kustomointi asetuksille: <!-- uusimpien viestien määrä, tietyn ajan viestien määrä,...  -->
+</p>
+
+<form id="asetukset" name="asetukset">
+<fieldset>
+<legend>Asetukset</legend>
+<div>
+
+<label for="maara">Uusien viestien määrä: </label>
+<input type="text" id="maara" name="maara"/>
+
+</div>
+<div>
+
+<label for="maara2">Kaikkien viestien määrä: </label>
+<input type="text" id="maara2" name="maara2"/>
+
+</div>
+<p><input type="submit" name="muuta" id="muuta" value="Muuta!" /></p>
+</fieldset>
+
+</body>
+</html>
