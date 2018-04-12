@@ -4,8 +4,12 @@
   <meta charset="UTF-8"/>
   <title>Viestintäjärjestelmä</title> 
   <link href="tyyli.css" rel="StyleSheet" type="text/css" />
+  <script type="text/javascript" src="jquery-3.2.1.js"></script>
+  <script type="text/javascript" src="jarjestelma.js"></script>
 </head>
 <body>
+
+<h1> Viestintäjärjestelmä </h1>
 
 <div>
 
@@ -44,7 +48,24 @@ Kaikki viestit määrätyltä ajalta:
 
 </form>
 
+<form id="chat" name="chat">
+<fieldset>
+<legend>Chat</legend>
+
 <div>
+Tähän tulee chat viestejä
+</div>
+
+<div>
+
+<label for="message">Viesti: </label>
+<input type="text" id="message" name="massage"/>
+
+</div>
+<p><input type="submit" name="send" id="send" value="Lähetä!" /></p>
+</fieldset>
+
+</form>
 
 <p>
 Kustomointi asetuksille: <!-- uusimpien viestien määrä, tietyn ajan viestien määrä,...  -->
