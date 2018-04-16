@@ -13,7 +13,33 @@ app.debug = True
 @app.route('/hae_viestit', methods=['GET'])
 def hae_viestit():
 
-    resp = make_response("viesti")
+    con = sqlite3.connect( os.path.abspath('../hidden/viestinta'))
+    con.row_factory = sqlite3.Row
+    
+    cur = con.cursor()
+    
+    try:
+        cur.execute('select Nimi AS Nimi, Viesti AS Viesti from Viestit')
+    except:
+        logging.debug( sys.exc_info()[0] )
+    
+    viestit = ""
+    for o in cur:
+        viestit = viestit + "<li>" + o["Nimi"] + " | " + o["Viesti"] + "</li>"
+        
+    viestit = '<ul id="taulu">' + viestit + '</ul>' 
+    
+    con.close()
+
+    resp = make_response(viestit, 200)
+    resp.charset = "UTF-8"
+    resp.mimetype = "text/plain"
+    return resp
+    
+@app.route('/lisaa_tietokantaan', methods=['POST'])
+def lisaa_tietokantaan():
+
+    resp = make_response("ADMIN: testi")
     resp.charset = "UTF-8"
     resp.mimetype = "text/plain"
     return resp
