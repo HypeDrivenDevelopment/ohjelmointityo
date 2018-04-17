@@ -36,10 +36,31 @@ def hae_viestit():
     resp.mimetype = "text/plain"
     return resp
     
-@app.route('/lisaa_tietokantaan', methods=['POST'])
+@app.route('/lisaa_tietokantaan', methods=['GET','POST'])
 def lisaa_tietokantaan():
+    
+    con = sqlite3.connect( os.path.abspath('../hidden/viestinta'))
+    con.row_factory = sqlite3.Row
+    
+    nimi = request.form.get('nimi', "")
+    viesti = request.form.get('viesti', "")
 
-    resp = make_response("ADMIN: testi")
+    indeksi = None
+    
+    try:
+        con.execute(
+            "INSERT INTO Viestit VALUES (?, ?, ?)",
+            (indeksi, nimi, viesti))
+            
+    except:
+        con.rollback()
+        Response = make_response("ei toimi")
+        return Response
+            
+    con.commit()
+    con.close()
+
+    resp = make_response("toimii")
     resp.charset = "UTF-8"
     resp.mimetype = "text/plain"
     return resp

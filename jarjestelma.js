@@ -1,10 +1,10 @@
 window.onload = function() {
 	
-	//$("#laheta").on("click", lisaa_tietokantaan);
+	$("#laheta").on("click", lisaa_tietokantaan);
 	
 	$("#muuta").on("click", hae_viestit);
 	
-	oikeudet();
+	//oikeudet();
 	
 	hae_viestit(); // vois ottaa parametrinä asetuksista viestien määrän
 }
@@ -30,6 +30,23 @@ $.ajax({
 });
 }
 
+function lisaa_tietokantaan(e) {
+e.preventDefault();
+$.ajax({
+        async: true,
+        url: "/~samipelt/cgi-bin/ohjelmointityo/flask.cgi/lisaa_tietokantaan",
+        type: "POST",
+        dataType: "text",
+		
+		data: { "nimi":$("#nimi").val(),
+        "viesti":$("#viesti").val(),
+        },
+        
+        success: lisaaminen_onnistui,
+        error: ajax_virhe
+});	
+}
+
 function oikeudet() {
 	// submit nappulat näkyviin jos oikeudet
 	// admin ominaisuudet näkyviin jos lisää oikeuksia
@@ -37,8 +54,13 @@ function oikeudet() {
 	
 }
 
+function lisaaminen_onnistui(data, textStatus, request) {
+	console.log( data );
+	hae_viestit();
+}
+
 function lisaa_viestit(data, textStatus, request) {
-	$('#viestit').replaceWith( data );
+	$('#taulu').replaceWith( data );
 	console.log( data );
 }
 
