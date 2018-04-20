@@ -4,9 +4,31 @@ window.onload = function() {
 	
 	$("#muuta").on("click", hae_viestit);
 	
+	//$(".poista").on("click", poista_tietokannasta)
+ 
+	
 	//oikeudet();
 	
 	hae_viestit(); // vois ottaa parametrinä asetuksista viestien määrän
+}
+
+function poista_tietokannasta(e) {
+	apuid = $(this).attr("id");
+	console.log(apuid);
+
+$.ajax({
+        async: true,
+        url: "/~samipelt/cgi-bin/ohjelmointityo/flask.cgi/poista_tietokannasta",
+        type: "POST",
+        dataType: "text",
+		
+		data: { "id":apuid,
+        },
+        
+        success: poistaminen_onnistui,
+        error: ajax_virhe
+});	
+	
 }
 
 function hae_viestit() {
@@ -59,9 +81,15 @@ function lisaaminen_onnistui(data, textStatus, request) {
 	hae_viestit();
 }
 
+function poistaminen_onnistui(data, textStatus, request) {
+	console.log( data );
+	hae_viestit();
+}
+
 function lisaa_viestit(data, textStatus, request) {
 	$('#taulu').replaceWith( data );
 	console.log( data );
+	$(".poista").on("click", poista_tietokannasta)
 }
 
 function ajax_virhe(xhr, status, error) {

@@ -1,3 +1,8 @@
 h1 {
-  float: top;
+  text-align: center;
+}
+
+li {
+	margin-bottom: 1em;
+	background-color: LightGrey;
 }

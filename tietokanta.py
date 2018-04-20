@@ -19,13 +19,15 @@ def hae_viestit():
     cur = con.cursor()
     
     try:
-        cur.execute('select Nimi AS Nimi, Viesti AS Viesti from Viestit')
+        cur.execute('select Nimi AS Nimi, Viesti AS Viesti, ViestiID AS ViestiID from Viestit')
     except:
         logging.debug( sys.exc_info()[0] )
     
     viestit = ""
     for o in cur:
-        viestit = viestit + "<li>" + o["Nimi"] + " | " + o["Viesti"] + "</li>"
+        numero = o["ViestiID"]
+        merkkijono = str (numero)
+        viestit = viestit + "<li class='poista' id='" + merkkijono + "'>" + o["Nimi"] + " | " + o["Viesti"] + "</li>"
         
     viestit = '<ul id="taulu">' + viestit + '</ul>' 
     
@@ -57,6 +59,29 @@ def lisaa_tietokantaan():
         Response = make_response("ei toimi")
         return Response
             
+    con.commit()
+    con.close()
+
+    resp = make_response("toimii")
+    resp.charset = "UTF-8"
+    resp.mimetype = "text/plain"
+    return resp
+    
+@app.route('/poista_tietokannasta', methods=['GET','POST'])
+def poista_tietokannasta():
+
+    con = sqlite3.connect( os.path.abspath('../hidden/viestinta'))
+    con.row_factory = sqlite3.Row
+    
+    id = request.form.get('id', "")
+    
+    try:
+        con.execute('DELETE FROM Viestit WHERE ViestiID=?', (id,))
+    except:
+        con.rollback()
+        Response = make_response("ei toimi")
+        return Response
+        
     con.commit()
     con.close()
 
