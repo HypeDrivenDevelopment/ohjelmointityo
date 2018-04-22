@@ -2,7 +2,7 @@ window.onload = function() {
 	
 	$("#laheta").on("click", lisaa_tietokantaan);
 	
-	$("#muuta").on("click", hae_viestit);
+	$("#muuta").on("click", muuta_asetukset);
 	
 	//$(".poista").on("click", poista_tietokannasta)
  
@@ -31,22 +31,19 @@ $.ajax({
 	
 }
 
+function muuta_asetukset(e) {
+e.preventDefault();
+hae_viestit();
+}
+
 function hae_viestit() {
-	//var kentat = document.getElementsByName("maara");
-	//var kentta = kentat[0];
-	//var luku = kentta.value;
-	
-	//var kentat2 = document.getElementsByName("maara2");
-	//var kentta2 = kentat2[0];
-	//var luku2 = kentta2.value;
-	
-	//if maara =/= 0, maara n
-	
 $.ajax({
         async: true,
         url: "/~samipelt/cgi-bin/ohjelmointityo/flask.cgi/hae_viestit",
-        type: "GET",
+        type: "POST",
         dataType: "text",
+		data: { "maara":$("#maara").val(),
+		},
         success: lisaa_viestit,
         error: ajax_virhe
 });

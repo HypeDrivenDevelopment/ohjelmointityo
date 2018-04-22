@@ -10,12 +10,19 @@ logging.basicConfig(filename=os.path.abspath('../hidden/logi.log'),level=logging
 app = Flask(__name__) 
 app.debug = True
 
-@app.route('/hae_viestit', methods=['GET'])
+@app.route('/hae_viestit', methods=['GET','POST'])
 def hae_viestit():
 
     con = sqlite3.connect( os.path.abspath('../hidden/viestinta'))
     con.row_factory = sqlite3.Row
     
+    maara = request.form.get('maara', "")
+    try:
+        maara = int (maara)
+        
+    except:
+        maara = 10
+        
     cur = con.cursor()
     
     try:
@@ -23,11 +30,15 @@ def hae_viestit():
     except:
         logging.debug( sys.exc_info()[0] )
     
+    i = 1
     viestit = ""
     for o in cur:
         numero = o["ViestiID"]
         merkkijono = str (numero)
         viestit = viestit + "<li class='poista' id='" + merkkijono + "'>" + o["Nimi"] + " | " + o["Viesti"] + "</li>"
+        if i == maara:
+            break
+        i += 1
         
     viestit = '<ul id="taulu">' + viestit + '</ul>' 
     
