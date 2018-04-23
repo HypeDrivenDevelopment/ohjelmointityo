@@ -26,7 +26,7 @@ def hae_viestit():
     cur = con.cursor()
     
     try:
-        cur.execute('select Nimi AS Nimi, Viesti AS Viesti, ViestiID AS ViestiID from Viestit')
+        cur.execute('select Nimi AS Nimi, Viesti AS Viesti, ViestiID AS ViestiID from Viestit order by ViestiID desc')
     except:
         logging.debug( sys.exc_info()[0] )
     
@@ -48,6 +48,68 @@ def hae_viestit():
     resp.charset = "UTF-8"
     resp.mimetype = "text/plain"
     return resp
+
+    
+@app.route('/hae_chat', methods=['GET','POST'])
+def hae_chat():
+
+    con = sqlite3.connect( os.path.abspath('../hidden/viestinta'))
+    con.row_factory = sqlite3.Row
+        
+    cur = con.cursor()
+    
+    try:
+        cur.execute('select Teksti AS Teksti, ChatID AS ChatID from Chat order by ChatID desc') #mieti miten saa käännettyä vielä toisen kerran
+    except:
+        logging.debug( sys.exc_info()[0] )
+        
+    maara = 10
+    i = 1
+    viestit = ""
+    for o in cur:
+        viestit = viestit + "<td>" + o["Teksti"] + "</td>"
+        if i == maara:
+            break
+        i += 1
+        
+    viestit = '<tr id="chatviestit">' + viestit + '</tr>' 
+    
+    con.close()
+
+    resp = make_response(viestit, 200)
+    resp.charset = "UTF-8"
+    resp.mimetype = "text/plain"
+    return resp
+
+    
+@app.route('/lisaa_chattietokantaan', methods=['GET','POST'])
+def lisaa_chattietokantaan():
+    
+    con = sqlite3.connect( os.path.abspath('../hidden/viestinta'))
+    con.row_factory = sqlite3.Row
+    
+    teksti = request.form.get('message', "")
+
+    indeksi = None
+    
+    try:
+        con.execute(
+            "INSERT INTO Chat VALUES (?, ?)",
+            (indeksi, teksti))
+            
+    except:
+        con.rollback()
+        Response = make_response("ei toimi")
+        return Response
+            
+    con.commit()
+    con.close()
+
+    resp = make_response("toimii")
+    resp.charset = "UTF-8"
+    resp.mimetype = "text/plain"
+    return resp    
+
     
 @app.route('/lisaa_tietokantaan', methods=['GET','POST'])
 def lisaa_tietokantaan():

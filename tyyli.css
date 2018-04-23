@@ -6,3 +6,7 @@ li {
 	margin-bottom: 1em;
 	background-color: LightGrey;
 }
+
+td {
+	display:block;
+}

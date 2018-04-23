@@ -4,12 +4,43 @@ window.onload = function() {
 	
 	$("#muuta").on("click", muuta_asetukset);
 	
+	$("#send").on("click", lisaa_chattietokantaan);
+	
 	//$(".poista").on("click", poista_tietokannasta)
  
 	
 	//oikeudet();
 	
-	hae_viestit(); // vois ottaa parametrinä asetuksista viestien määrän
+	hae_viestit();
+	
+	hae_chat();
+}
+
+function lisaa_chattietokantaan(e) {
+e.preventDefault();
+$.ajax({
+        async: true,
+        url: "/~samipelt/cgi-bin/ohjelmointityo/flask.cgi/lisaa_chattietokantaan",
+        type: "POST",
+        dataType: "text",
+		
+		data: { "message":$("#message").val(),
+        },
+        
+        success: chatlisaaminen_onnistui,
+        error: ajax_virhe
+});	
+}
+
+function hae_chat() {
+$.ajax({
+        async: true,
+        url: "/~samipelt/cgi-bin/ohjelmointityo/flask.cgi/hae_chat",
+        type: "GET",
+        dataType: "text",
+        success: lisaa_chat,
+        error: ajax_virhe
+});
 }
 
 function poista_tietokannasta(e) {
@@ -78,6 +109,11 @@ function lisaaminen_onnistui(data, textStatus, request) {
 	hae_viestit();
 }
 
+function chatlisaaminen_onnistui(data, textStatus, request) {
+	console.log( data );
+	hae_chat();
+}
+
 function poistaminen_onnistui(data, textStatus, request) {
 	console.log( data );
 	hae_viestit();
@@ -87,6 +123,11 @@ function lisaa_viestit(data, textStatus, request) {
 	$('#taulu').replaceWith( data );
 	console.log( data );
 	$(".poista").on("click", poista_tietokannasta)
+}
+
+function lisaa_chat(data, textStatus, request) {
+	$('#chatviestit').replaceWith( data );
+	console.log( data );
 }
 
 function ajax_virhe(xhr, status, error) {
