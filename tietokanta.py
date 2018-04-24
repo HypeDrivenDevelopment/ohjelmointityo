@@ -162,6 +162,28 @@ def poista_tietokannasta():
     resp.charset = "UTF-8"
     resp.mimetype = "text/plain"
     return resp
+    
+
+@app.route('/tyhjenna_chat', methods=['GET','POST'])
+def tyhjenna_chat():
+
+    con = sqlite3.connect( os.path.abspath('../hidden/viestinta'))
+    con.row_factory = sqlite3.Row
+    
+    try:
+        con.execute('DELETE FROM Chat')
+    except:
+        con.rollback()
+        Response = make_response("ei toimi")
+        return Response
+        
+    con.commit()
+    con.close()
+
+    resp = make_response("toimii")
+    resp.charset = "UTF-8"
+    resp.mimetype = "text/plain"
+    return resp
 
 if __name__ == '__main__':
     app.debug = True

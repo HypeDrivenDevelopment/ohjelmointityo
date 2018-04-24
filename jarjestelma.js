@@ -6,6 +6,8 @@ window.onload = function() {
 	
 	$("#send").on("click", lisaa_chattietokantaan);
 	
+	$("#tyhjenna").on("click", tyhjenna_chat);
+	
 	//$(".poista").on("click", poista_tietokannasta)
  
 	
@@ -14,6 +16,18 @@ window.onload = function() {
 	hae_viestit();
 	
 	hae_chat();
+}
+
+function tyhjenna_chat(e) {
+e.preventDefault();
+$.ajax({
+        async: true,
+        url: "/~samipelt/cgi-bin/ohjelmointityo/flask.cgi/tyhjenna_chat",
+        type: "GET",
+        dataType: "text",
+        success: tyhjennys_onnistui,
+        error: ajax_virhe
+});
 }
 
 function lisaa_chattietokantaan(e) {
@@ -102,6 +116,11 @@ function oikeudet() {
 	// admin ominaisuudet näkyviin jos lisää oikeuksia
 	
 	
+}
+
+function tyhjennys_onnistui(data, textStatus, request) {
+	console.log( data );
+	hae_chat();
 }
 
 function lisaaminen_onnistui(data, textStatus, request) {
