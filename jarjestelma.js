@@ -8,6 +8,8 @@ window.onload = function() {
 	
 	$("#tyhjenna").on("click", tyhjenna_chat);
 	
+	$("#nayta").on("click", hae_kaikkiviestit);
+	
 	//$(".poista").on("click", poista_tietokannasta)
  
 	
@@ -88,6 +90,22 @@ $.ajax({
         type: "POST",
         dataType: "text",
 		data: { "maara":$("#maara").val(),
+		},
+        success: lisaa_viestit,
+        error: ajax_virhe
+});
+}
+
+function hae_kaikkiviestit(e) {
+e.preventDefault();
+var kaikki = 999;
+// vaihda mahdollisesti 999 vielä asetuksien arvoksi
+$.ajax({
+        async: true,
+        url: "/~samipelt/cgi-bin/ohjelmointityo/flask.cgi/hae_viestit",
+        type: "POST",
+        dataType: "text",
+		data: { "maara":kaikki,
 		},
         success: lisaa_viestit,
         error: ajax_virhe
