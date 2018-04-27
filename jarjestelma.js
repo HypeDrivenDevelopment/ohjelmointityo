@@ -1,5 +1,39 @@
 window.onload = function() {
+
+	$("#kirjaudu").on("click", oikeudet);
 	
+	//$("#laheta").on("click", lisaa_tietokantaan);
+	
+	//$("#muuta").on("click", muuta_asetukset);
+	
+	//$("#send").on("click", lisaa_chattietokantaan);
+	
+	//$("#tyhjenna").on("click", tyhjenna_chat);
+	
+	//$("#nayta").on("click", hae_kaikkiviestit);
+	
+	//hae_viestit();
+	
+	//hae_chat();
+}
+
+function oikeudet(e) {
+e.preventDefault();
+$.ajax({
+        async: true,
+        url: "/~samipelt/cgi-bin/ohjelmointityo/flask.cgi/oikeudet",
+        type: "POST",
+        dataType: "text",
+		data: { "kayttaja":$("#kayttaja").val(),
+		"salasana":$("#salasana").val(),
+        },
+        success: kirjautumisen_tarkistus,
+        error: ajax_virhe
+});	
+}
+
+function kirjautumisen_tarkistus (data, textStatus, request) {
+	// if data == jotain
 	$("#laheta").on("click", lisaa_tietokantaan);
 	
 	$("#muuta").on("click", muuta_asetukset);
@@ -10,14 +44,12 @@ window.onload = function() {
 	
 	$("#nayta").on("click", hae_kaikkiviestit);
 	
-	//$(".poista").on("click", poista_tietokannasta)
- 
-	
-	//oikeudet();
-	
 	hae_viestit();
 	
 	hae_chat();
+	
+	//mahd piilota kirjautuminen
+	//ja ota nimikentästä syötteisiin nimi
 }
 
 function tyhjenna_chat(e) {
