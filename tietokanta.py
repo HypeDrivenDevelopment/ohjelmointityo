@@ -10,6 +10,20 @@ logging.basicConfig(filename=os.path.abspath('../hidden/logi.log'),level=logging
 app = Flask(__name__) 
 app.debug = True
 
+@app.route('/oikeudet', methods=['GET','POST'])
+def oikeudet():
+
+    kayttaja = request.form.get('kayttaja', "")
+    salasana = request.form.get('salasana', "")
+    
+    if kayttaja == "Admin" and salasana == "salasana":
+        Response = make_response("true")
+        return Response
+        
+    Response = make_response("false")
+    return Response
+
+
 @app.route('/hae_viestit', methods=['GET','POST'])
 def hae_viestit():
 

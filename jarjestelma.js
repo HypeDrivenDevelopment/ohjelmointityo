@@ -1,23 +1,10 @@
 window.onload = function() {
 
-	$("#kirjaudu").on("click", oikeudet);
-	
-	//$("#laheta").on("click", lisaa_tietokantaan);
-	
-	//$("#muuta").on("click", muuta_asetukset);
-	
-	//$("#send").on("click", lisaa_chattietokantaan);
-	
-	//$("#tyhjenna").on("click", tyhjenna_chat);
-	
-	//$("#nayta").on("click", hae_kaikkiviestit);
-	
-	//hae_viestit();
-	
-	//hae_chat();
+	$("#kirjaudu").on("click", tarkasta_oikeudet);
+
 }
 
-function oikeudet(e) {
+function tarkasta_oikeudet(e) {
 e.preventDefault();
 $.ajax({
         async: true,
@@ -33,7 +20,7 @@ $.ajax({
 }
 
 function kirjautumisen_tarkistus (data, textStatus, request) {
-	// if data == jotain
+	if (data == "true") {
 	$("#laheta").on("click", lisaa_tietokantaan);
 	
 	$("#muuta").on("click", muuta_asetukset);
@@ -47,8 +34,12 @@ function kirjautumisen_tarkistus (data, textStatus, request) {
 	hae_viestit();
 	
 	hae_chat();
+	}
+	
+	console.log( data );
 	
 	//mahd piilota kirjautuminen
+	//ja paljasta kaikki muu
 	//ja ota nimikentästä syötteisiin nimi
 }
 
@@ -159,13 +150,6 @@ $.ajax({
         success: lisaaminen_onnistui,
         error: ajax_virhe
 });	
-}
-
-function oikeudet() {
-	// submit nappulat näkyviin jos oikeudet
-	// admin ominaisuudet näkyviin jos lisää oikeuksia
-	
-	
 }
 
 function tyhjennys_onnistui(data, textStatus, request) {
