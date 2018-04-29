@@ -34,6 +34,10 @@ function kirjautumisen_tarkistus (data, textStatus, request) {
 	hae_viestit();
 	
 	hae_chat();
+	
+	$('#kirjautumiset').addClass('hidden');
+	
+	$('#sisalto').removeClass('hidden');
 	}
 	
 	console.log( data );
@@ -41,6 +45,8 @@ function kirjautumisen_tarkistus (data, textStatus, request) {
 	//mahd piilota kirjautuminen
 	//ja paljasta kaikki muu
 	//ja ota nimikentästä syötteisiin nimi
+	// if data == perus, asdf
+	// if data == admin, asdf+
 }
 
 function tyhjenna_chat(e) {

@@ -10,3 +10,7 @@ li {
 td {
 	display:block;
 }
+
+.hidden {
+  display: none;
+}
