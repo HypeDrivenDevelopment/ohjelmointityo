@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask, session, redirect, url_for, escape, request, Response, render_template, make_response
+from datetime import date
+from datetime import timedelta
 import sqlite3
 import logging
 import os
@@ -23,6 +25,31 @@ def oikeudet():
     Response = make_response("false")
     return Response
 
+    
+@app.route('/poista_vanhat', methods=['GET','POST'])
+def poista_vanhat():
+
+    con = sqlite3.connect( os.path.abspath('../hidden/viestinta'))
+    con.row_factory = sqlite3.Row
+    
+    today = date.today()
+    week = today + timedelta(days=-7)
+
+    try:
+        con.execute('delete from Viestit WHERE Paiva<?', (week,))
+    except:
+        con.rollback()
+        Response = make_response("ei toimi")
+        return Response
+        
+    con.commit()
+    con.close()
+
+    resp = make_response("toimii")
+    resp.charset = "UTF-8"
+    resp.mimetype = "text/plain"
+    return resp
+
 
 @app.route('/hae_viestit', methods=['GET','POST'])
 def hae_viestit():
@@ -40,7 +67,7 @@ def hae_viestit():
     cur = con.cursor()
     
     try:
-        cur.execute('select Nimi AS Nimi, Viesti AS Viesti, ViestiID AS ViestiID from Viestit order by ViestiID desc')
+        cur.execute('select Nimi AS Nimi, Viesti AS Viesti, ViestiID AS ViestiID, Paiva AS Paiva from Viestit order by ViestiID desc')
     except:
         logging.debug( sys.exc_info()[0] )
     
@@ -49,7 +76,7 @@ def hae_viestit():
     for o in cur:
         numero = o["ViestiID"]
         merkkijono = str (numero)
-        viestit = viestit + "<li class='poista' id='" + merkkijono + "'>" + o["Nimi"] + " | " + o["Viesti"] + "</li>"
+        viestit = viestit + "<li class='poista' id='" + merkkijono + "'>" + o["Nimi"] + " | " + o["Viesti"] + " | " + o["Paiva"] + "</li>"
         if i == maara:
             break
         i += 1
@@ -136,10 +163,14 @@ def lisaa_tietokantaan():
 
     indeksi = None
     
+    today = date.today() #str
+    
+    poisto = True
+    
     try:
         con.execute(
-            "INSERT INTO Viestit VALUES (?, ?, ?)",
-            (indeksi, nimi, viesti))
+            "INSERT INTO Viestit VALUES (?, ?, ?, ?, ?)",
+            (indeksi, nimi, viesti, today, poisto))
             
     except:
         con.rollback()

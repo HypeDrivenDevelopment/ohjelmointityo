@@ -42,8 +42,6 @@ function kirjautumisen_tarkistus (data, textStatus, request) {
 	
 	console.log( data );
 	
-	//mahd piilota kirjautuminen
-	//ja paljasta kaikki muu
 	//ja ota nimikentästä syötteisiin nimi
 	// if data == perus, asdf
 	// if data == admin, asdf+
@@ -149,7 +147,7 @@ $.ajax({
         type: "POST",
         dataType: "text",
 		
-		data: { "nimi":$("#nimi").val(),
+		data: { "nimi":$("#kayttaja").val(),
         "viesti":$("#viesti").val(),
         },
         

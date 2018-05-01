@@ -7,14 +7,16 @@ DROP TABLE IF EXISTS Chat
 CREATE TABLE Viestit (
 ViestiID INTEGER PRIMARY KEY AUTOINCREMENT,
 Nimi VARCHAR(50) NOT NULL,
-Viesti VARCHAR(100) NOT NULL
+Viesti VARCHAR(100) NOT NULL,
+Paiva DATE NOT NULL,
+Poisto BOOLEAN NOT NULL
 );
 
-INSERT INTO Viestit (Nimi, Viesti) VALUES ('Admin', 'Ensimmainen entry');
-INSERT INTO Viestit (Nimi, Viesti) VALUES ('Admin', 'Toinen entry');
-INSERT INTO Viestit (Nimi, Viesti) VALUES ('Jorma', 'asd');
-INSERT INTO Viestit (Nimi, Viesti) VALUES ('Jarmo', 'fgh');
-INSERT INTO Viestit (Nimi, Viesti) VALUES ('Paavo', 'jkl');
+INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto) VALUES ('Admin', 'Ensimmainen entry', '2018-05-01', 'FALSE');
+INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto) VALUES ('Admin', 'Toinen entry', '2018-05-01', 'FALSE');
+INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto) VALUES ('Jorma', 'asd', '2018-05-01', 'TRUE');
+INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto) VALUES ('Jarmo', 'fgh', '2018-05-01', 'TRUE');
+INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto) VALUES ('Paavo', 'jkl', '2018-05-01', 'TRUE');
 
 CREATE TABLE Chat (
 ChatID INTEGER PRIMARY KEY AUTOINCREMENT,
