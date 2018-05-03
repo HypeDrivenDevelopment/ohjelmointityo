@@ -4,6 +4,9 @@ window.onload = function() {
 
 }
 
+/*
+Funktio joka lähettää käyttäjän syöttämät nimen ja salasanan ajaxilla tarkistettavaksi.
+*/
 function tarkasta_oikeudet(e) {
 e.preventDefault();
 $.ajax({
@@ -19,6 +22,11 @@ $.ajax({
 });	
 }
 
+
+/*
+Funktio joka kirjautumisen onnistuessa lataa tietokannat, 
+lisää painikkeisiin toiminnallisuuden, sekä piilottaa kirjautumisen ja näyttää sivun muun sisällön.
+*/
 function kirjautumisen_tarkistus (data, textStatus, request) {
 	if (data == "true") {
 	$("#laheta").on("click", lisaa_tietokantaan);
@@ -42,11 +50,12 @@ function kirjautumisen_tarkistus (data, textStatus, request) {
 	
 	console.log( data );
 	
-	//ja ota nimikentästä syötteisiin nimi
 	// if data == perus, asdf
 	// if data == admin, asdf+
 }
-
+/*
+Funktio joka lähettää ajaxilla kutsun chattietokannan tyhjentämisestä.
+*/
 function tyhjenna_chat(e) {
 e.preventDefault();
 $.ajax({
@@ -58,7 +67,9 @@ $.ajax({
         error: ajax_virhe
 });
 }
-
+/*
+Funktio joka välittää käyttäjän syötteen ajaxilla chattietokantaan.
+*/
 function lisaa_chattietokantaan(e) {
 e.preventDefault();
 $.ajax({
@@ -75,6 +86,9 @@ $.ajax({
 });	
 }
 
+/*
+Funktio joka hakee ajaxilla chattietokannan sisällön.
+*/
 function hae_chat() {
 $.ajax({
         async: true,
@@ -85,7 +99,9 @@ $.ajax({
         error: ajax_virhe
 });
 }
-
+/*
+Funktio joka hakee klikatun viestielementin ID:n ja välittää sen ajaxilla eteenpäin poistoa varten.
+*/
 function poista_tietokannasta(e) {
 	apuid = $(this).attr("id");
 	console.log(apuid);
@@ -101,8 +117,7 @@ $.ajax({
         
         success: poistaminen_onnistui,
         error: ajax_virhe
-});	
-	
+});		
 }
 
 function muuta_asetukset(e) {
@@ -110,6 +125,9 @@ e.preventDefault();
 hae_viestit();
 }
 
+/*
+Funktio joka hakee ajaxilla halutun määrän viestitietokannan viestejä.
+*/
 function hae_viestit() {
 $.ajax({
         async: true,
@@ -123,10 +141,12 @@ $.ajax({
 });
 }
 
+/*
+Funktio joka hakee ajaxilla kaikki viestitietokannan viestit.
+*/
 function hae_kaikkiviestit(e) {
 e.preventDefault();
 var kaikki = 999;
-// vaihda mahdollisesti 999 vielä asetuksien arvoksi
 $.ajax({
         async: true,
         url: "/~samipelt/cgi-bin/ohjelmointityo/flask.cgi/hae_viestit",
@@ -139,8 +159,18 @@ $.ajax({
 });
 }
 
+/*
+Funktio joka ottaa lomakkeelta käyttäjän nimen, viestin ja tiedon automaattisesta poistosta 
+ja välittää ne ajaxilla viestitietokantaan lisättäväksi.
+*/
 function lisaa_tietokantaan(e) {
 e.preventDefault();
+var check = false
+if ($('#poisto').is(":checked"))
+{
+  check = true
+}
+console.log( check );
 $.ajax({
         async: true,
         url: "/~samipelt/cgi-bin/ohjelmointityo/flask.cgi/lisaa_tietokantaan",
@@ -149,6 +179,7 @@ $.ajax({
 		
 		data: { "nimi":$("#kayttaja").val(),
         "viesti":$("#viesti").val(),
+		"poisto":check,
         },
         
         success: lisaaminen_onnistui,

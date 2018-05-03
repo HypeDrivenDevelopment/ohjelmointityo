@@ -12,6 +12,7 @@ logging.basicConfig(filename=os.path.abspath('../hidden/logi.log'),level=logging
 app = Flask(__name__) 
 app.debug = True
 
+# Salasanan ja käyttäjätunnuksen tarkastava funktio, joka palauttaa tiedon tarkastuksen onnistumisesta.
 @app.route('/oikeudet', methods=['GET','POST'])
 def oikeudet():
 
@@ -25,7 +26,8 @@ def oikeudet():
     Response = make_response("false")
     return Response
 
-    
+
+# Viestitietokannasta viikon vanhat viestit poistava funktio, joka palauttaa tiedon onnistumisesta.
 @app.route('/poista_vanhat', methods=['GET','POST'])
 def poista_vanhat():
 
@@ -51,6 +53,7 @@ def poista_vanhat():
     return resp
 
 
+# Viestitietokannasta kaikki viestit hakeva funktio, joka syötteen perusteella palauttaa n-kappaletta uusinta viestiä listamuodossa.
 @app.route('/hae_viestit', methods=['GET','POST'])
 def hae_viestit():
 
@@ -58,6 +61,7 @@ def hae_viestit():
     con.row_factory = sqlite3.Row
     
     maara = request.form.get('maara', "")
+    
     try:
         maara = int (maara)
         
@@ -90,7 +94,7 @@ def hae_viestit():
     resp.mimetype = "text/plain"
     return resp
 
-    
+# Chattietokannasta viestit hakeva funktio, joka palauttaa maksimissaan 10 uusinta viestiä taulukkomuodossa.    
 @app.route('/hae_chat', methods=['GET','POST'])
 def hae_chat():
 
@@ -100,7 +104,7 @@ def hae_chat():
     cur = con.cursor()
     
     try:
-        cur.execute('select Teksti AS Teksti, ChatID AS ChatID from Chat order by ChatID desc') #mieti miten saa käännettyä vielä toisen kerran
+        cur.execute('select Teksti AS Teksti, ChatID AS ChatID from Chat order by ChatID desc') 
     except:
         logging.debug( sys.exc_info()[0] )
         
@@ -123,6 +127,7 @@ def hae_chat():
     return resp
 
     
+# Chattietokantaan viestin lisäävä funktio, joka palauttaa tiedon onnistumisesta.
 @app.route('/lisaa_chattietokantaan', methods=['GET','POST'])
 def lisaa_chattietokantaan():
     
@@ -151,7 +156,8 @@ def lisaa_chattietokantaan():
     resp.mimetype = "text/plain"
     return resp    
 
-    
+
+# Viestitietokantaan lisäävä funtio, käyttää saatua nimeä, viestiä ja tietoa viestin poistosta, sekä hakee päivämäärän. Palauttaa tiedon onnistumisesta.
 @app.route('/lisaa_tietokantaan', methods=['GET','POST'])
 def lisaa_tietokantaan():
     
@@ -163,7 +169,7 @@ def lisaa_tietokantaan():
 
     indeksi = None
     
-    today = date.today() #str
+    today = date.today()
     
     poisto = True
     
@@ -184,7 +190,9 @@ def lisaa_tietokantaan():
     resp.charset = "UTF-8"
     resp.mimetype = "text/plain"
     return resp
-    
+
+
+# Funktio joka saa poistaa saatua id:tä vastaavan viestin viestitietokannasta. Palauttaa tiedon onnistumisesta.    
 @app.route('/poista_tietokannasta', methods=['GET','POST'])
 def poista_tietokannasta():
 
@@ -209,6 +217,7 @@ def poista_tietokannasta():
     return resp
     
 
+# Funktio joka tyhjentää chattietokannan kokonaan ja palauttaa tiedon onnistumisesta.    
 @app.route('/tyhjenna_chat', methods=['GET','POST'])
 def tyhjenna_chat():
 
