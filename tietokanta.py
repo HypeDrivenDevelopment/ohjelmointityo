@@ -4,6 +4,7 @@
 from flask import Flask, session, redirect, url_for, escape, request, Response, render_template, make_response
 from datetime import date
 from datetime import timedelta
+import hashlib
 import sqlite3
 import logging
 import os
@@ -12,17 +13,21 @@ logging.basicConfig(filename=os.path.abspath('../hidden/logi.log'),level=logging
 app = Flask(__name__) 
 app.debug = True
 
-# Salasanan ja käyttäjätunnuksen tarkastava funktio, joka palauttaa tiedon tarkastuksen onnistumisesta.
+# Salasanan ja käyttäjätunnuksen tarkastava funktio, joka palauttaa tiedon tarkastuksen onnistumisesta. Salauksessa käytetään SHA-1:tä.
 @app.route('/oikeudet', methods=['GET','POST'])
 def oikeudet():
 
     kayttaja = request.form.get('kayttaja', "")
     salasana = request.form.get('salasana', "")
     
-    if kayttaja == "Admin" and salasana == "salasana":
+    merkkijono = kayttaja + salasana
+    
+    encoded = hashlib.sha1(merkkijono.encode('utf-8')).hexdigest()
+    
+    if encoded == "6416068d531d179b8de9bcab314dbb4788f4280d":
         Response = make_response("true")
         return Response
-        
+    
     Response = make_response("false")
     return Response
 
@@ -56,6 +61,8 @@ def poista_vanhat():
 # Viestitietokannasta kaikki viestit hakeva funktio, joka syötteen perusteella palauttaa n-kappaletta uusinta viestiä listamuodossa.
 @app.route('/hae_viestit', methods=['GET','POST'])
 def hae_viestit():
+
+    poistot = poista_vanhat()
 
     con = sqlite3.connect( os.path.abspath('../hidden/viestinta'))
     con.row_factory = sqlite3.Row
@@ -166,12 +173,12 @@ def lisaa_tietokantaan():
     
     nimi = request.form.get('nimi', "")
     viesti = request.form.get('viesti', "")
+    poisto = request.form.get('poisto', "False")
 
     indeksi = None
     
     today = date.today()
     
-    poisto = True
     
     try:
         con.execute(
