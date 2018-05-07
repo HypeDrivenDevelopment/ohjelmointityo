@@ -39,6 +39,8 @@ function kirjautumisen_tarkistus (data, textStatus, request) {
 	
 	$("#nayta").on("click", hae_kaikkiviestit);
 	
+	$("#hae").on("click", hae_hakusanalla);
+	
 	hae_viestit();
 	
 	hae_chat();
@@ -53,6 +55,24 @@ function kirjautumisen_tarkistus (data, textStatus, request) {
 	// if data == perus, asdf
 	// if data == admin, asdf+
 }
+
+function hae_hakusanalla(e) {
+e.preventDefault();
+$.ajax({
+        async: true,
+        url: "/~samipelt/cgi-bin/ohjelmointityo/flask.cgi/hae_viestit",
+        type: "POST",
+        dataType: "text",
+		
+		data: { "maara":$("#maara").val(),
+		"hakusana":$("#hakusana").val(),
+        },
+        
+        success: lisaa_viestit,
+        error: ajax_virhe
+});	
+}
+
 /*
 Funktio joka lähettää ajaxilla kutsun chattietokannan tyhjentämisestä.
 */
@@ -67,6 +87,7 @@ $.ajax({
         error: ajax_virhe
 });
 }
+
 /*
 Funktio joka välittää käyttäjän syötteen ajaxilla chattietokantaan.
 */
@@ -99,6 +120,7 @@ $.ajax({
         error: ajax_virhe
 });
 }
+
 /*
 Funktio joka hakee klikatun viestielementin ID:n ja välittää sen ajaxilla eteenpäin poistoa varten.
 */

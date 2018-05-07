@@ -54,6 +54,18 @@ Viestit tulee tähän
 </div> 
 
 
+<form id="hakulomake" name="hakulomake">
+<fieldset>
+<legend>Haku</legend>
+
+<label for="hakusana">Hae viestejä hakusanalla: </label>
+<input type="text" id="hakusana" name="hakusana"/>
+
+<p><input type="submit" name="hae" id="hae" value="Hae!" /></p>
+
+</fieldset>
+</form>
+
 <form id="lomake" name="lomake">
 <fieldset>
 <legend>Lisäys</legend>
@@ -109,7 +121,7 @@ Kustomointi asetuksille: <!-- uusimpien viestien määrä, tietyn ajan viestien 
 <div>
 
 <label for="maara">Uusien viestien määrä: </label>
-<input type="text" id="maara" name="maara"/>
+<input type="text" id="maara" name="maara" value="10"/>
 
 </div>
 <div>

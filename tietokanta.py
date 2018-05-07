@@ -74,13 +74,27 @@ def hae_viestit():
         
     except:
         maara = 10
+    
+    hakusana = request.form.get('hakusana', "")
+    
+    haku = True
+    
+    if hakusana == "":
+        haku = False
         
     cur = con.cursor()
     
-    try:
-        cur.execute('select Nimi AS Nimi, Viesti AS Viesti, ViestiID AS ViestiID, Paiva AS Paiva from Viestit order by ViestiID desc')
-    except:
-        logging.debug( sys.exc_info()[0] )
+    if haku == False:
+        try:
+            cur.execute('select Nimi AS Nimi, Viesti AS Viesti, ViestiID AS ViestiID, Paiva AS Paiva from Viestit order by ViestiID desc')
+        except:
+            logging.debug( sys.exc_info()[0] )
+            
+    else:
+        try:
+            cur.execute("select Nimi AS Nimi, Viesti AS Viesti, ViestiID AS ViestiID, Paiva AS Paiva from Viestit where Viesti like ? order by ViestiID desc", ('%'+hakusana+'%',))
+        except:
+            logging.debug( sys.exc_info()[0] )
     
     i = 1
     viestit = ""
