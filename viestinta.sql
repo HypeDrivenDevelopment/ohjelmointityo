@@ -9,14 +9,17 @@ ViestiID INTEGER PRIMARY KEY AUTOINCREMENT,
 Nimi VARCHAR(50) NOT NULL,
 Viesti VARCHAR(100) NOT NULL,
 Paiva DATE NOT NULL,
-Poisto BOOLEAN NOT NULL
+Poisto BOOLEAN NOT NULL,
+Deadline DATE
 );
 
-INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto) VALUES ('Admin', 'Ensimmainen entry', '2018-05-01', 'FALSE');
-INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto) VALUES ('Admin', 'Toinen entry', '2018-05-01', 'FALSE');
-INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto) VALUES ('Jorma', 'asd', '2018-05-01', 'TRUE');
-INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto) VALUES ('Jarmo', 'fgh', '2018-05-01', 'TRUE');
-INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto) VALUES ('Paavo', 'jkl', '2018-05-01', 'TRUE');
+INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto) VALUES ('Admin', 'Ensimmainen entry', '2018-05-10', 'FALSE');
+INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto) VALUES ('Admin', 'Toinen entry', '2018-05-10', 'FALSE');
+INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto) VALUES ('Jorma', 'asd', '2018-05-10', 'TRUE');
+INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto) VALUES ('Jarmo', 'fgh', '2018-05-10', 'TRUE');
+INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto) VALUES ('Paavo', 'jkl', '2018-05-10', 'TRUE');
+INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto, Deadline) VALUES ('Paavo', 'jkl', '2018-05-10', 'TRUE', '2018-05-13');
+INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto, Deadline) VALUES ('Paavo', 'jkl', '2018-05-10', 'TRUE', '2018-05-12');
 
 CREATE TABLE Chat (
 ChatID INTEGER PRIMARY KEY AUTOINCREMENT,
