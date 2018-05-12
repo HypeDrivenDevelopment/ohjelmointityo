@@ -38,7 +38,7 @@ def oikeudet():
 @app.route('/hae_viikko', methods=['GET','POST'])
 def hae_viikko():
 
-    luku = datetime.datetime.today().weekday() # palauttaa kokonaisluvun, maanantai = 0, mahd 1 datetime liikaa
+    luku = datetime.datetime.today().weekday() # palauttaa kokonaisluvun, maanantai = 0
     
     today = date.today()
 
@@ -76,10 +76,9 @@ def hae_viikko():
                 paiva = datetime.datetime.strptime(paivastr, "%Y-%m-%d")
 
                 vkopaiva = paiva.weekday()
-                strvkopaiva = str(vkopaiva)
                 
                 if vkopaiva == i:
-                    day = day + strvkopaiva + " || " + o["Viesti"] + " | " + o["Deadline"] + "\n"
+                    day = day + o["Viesti"] + " | " + o["Deadline"] + "\n"
                     break
                 else:
                     dayb = "<td>" + day + "</td>"
@@ -91,11 +90,14 @@ def hae_viikko():
         dayb = "<td>" + day + "</td>"
         viikko = viikko + dayb    
     
-    #if i < 7, for erotus do td /td
+    if i < 6:
+        erotus = 6 - i
+        while erotus > 0:
+            viikko = viikko + "<td>""</td>"
     
     viikko = "<tr>" + viikko + "</tr>"
     viikko = otsikot + viikko
-    viikko = "<table>" + viikko + "</table>"
+    viikko = "<table id='kalenteri' name='kalenteri'>" + viikko + "</table>"
     
     con.close()
 
@@ -116,7 +118,7 @@ def poista_vanhat():
     week = today + timedelta(days=-7)
 
     try:
-        con.execute('delete from Viestit WHERE Paiva<?', (week,))
+        con.execute('delete from Viestit WHERE Paiva<? and Poisto="True"', (week,)) #vaihda deadlineks
     except:
         con.rollback()
         Response = make_response("ei toimi")
