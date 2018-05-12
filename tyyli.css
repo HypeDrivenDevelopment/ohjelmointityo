@@ -7,7 +7,7 @@ li {
 	background-color: LightGrey;
 }
 
-td {
+tr#chatviestit td {
 	display:block;
 }
 

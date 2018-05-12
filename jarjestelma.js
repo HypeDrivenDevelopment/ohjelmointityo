@@ -45,6 +45,8 @@ function kirjautumisen_tarkistus (data, textStatus, request) {
 	
 	hae_chat();
 	
+	hae_kalenteri();
+	
 	$('#kirjautumiset').addClass('hidden');
 	
 	$('#sisalto').removeClass('hidden');
@@ -54,6 +56,17 @@ function kirjautumisen_tarkistus (data, textStatus, request) {
 	
 	// if data == perus, asdf
 	// if data == admin, asdf+
+}
+
+function hae_kalenteri() {
+$.ajax({
+        async: true,
+        url: "/~samipelt/cgi-bin/ohjelmointityo/flask.cgi/hae_viikko",
+        type: "GET",
+        dataType: "text",
+        success: lisaa_kalenteri,
+        error: ajax_virhe
+});
 }
 
 function hae_hakusanalla(e) {
@@ -217,6 +230,7 @@ function tyhjennys_onnistui(data, textStatus, request) {
 function lisaaminen_onnistui(data, textStatus, request) {
 	console.log( data );
 	hae_viestit();
+	hae_kalenteri();
 }
 
 function chatlisaaminen_onnistui(data, textStatus, request) {
@@ -237,6 +251,11 @@ function lisaa_viestit(data, textStatus, request) {
 
 function lisaa_chat(data, textStatus, request) {
 	$('#chatviestit').replaceWith( data );
+	console.log( data );
+}
+
+function lisaa_kalenteri(data, textStatus, request) {
+	$('#kalenteri').replaceWith( data );
 	console.log( data );
 }
 
