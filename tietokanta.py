@@ -27,11 +27,28 @@ def oikeudet():
     
     encoded = hashlib.sha1(merkkijono.encode('utf-8')).hexdigest()
     
-    if encoded == "6416068d531d179b8de9bcab314dbb4788f4280d":
-        Response = make_response("true")
-        return Response
+    con = sqlite3.connect( os.path.abspath('../hidden/viestinta'))
+    con.row_factory = sqlite3.Row
     
-    Response = make_response("false")
+    cur = con.cursor()
+    
+    try:
+        cur.execute('select Oikeus AS Oikeus from Oikeudet where Merkkijono=?', (encoded,))
+    except:
+        logging.debug( sys.exc_info()[0] )
+    
+    oikeus = ""
+    
+    for o in cur:
+        oikeus = o["Oikeus"]
+    
+    con.close()
+        
+    if oikeus == "":
+        Response = make_response("false")
+        return Response
+        
+    Response = make_response(oikeus)
     return Response
 
     

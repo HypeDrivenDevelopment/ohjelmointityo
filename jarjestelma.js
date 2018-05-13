@@ -28,7 +28,7 @@ Funktio joka kirjautumisen onnistuessa lataa tietokannat,
 lisää painikkeisiin toiminnallisuuden, sekä piilottaa kirjautumisen ja näyttää sivun muun sisällön.
 */
 function kirjautumisen_tarkistus (data, textStatus, request) {
-	if (data == "true") {
+	if (data == "Admin") {
 	$("#laheta").on("click", lisaa_tietokantaan);
 	
 	$("#muuta").on("click", muuta_asetukset);

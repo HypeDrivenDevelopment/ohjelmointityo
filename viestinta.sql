@@ -31,3 +31,12 @@ INSERT INTO Chat (Teksti) VALUES ('Mitas');
 INSERT INTO Chat (Teksti) VALUES ('hoi');
 INSERT INTO Chat (Teksti) VALUES ('asdf');
 INSERT INTO Chat (Teksti) VALUES ('123123');
+
+CREATE TABLE Oikeudet (
+OikeusID INTEGER PRIMARY KEY AUTOINCREMENT,
+Merkkijono VARCHAR(100) NOT NULL,
+Oikeus VARCHAR(10) NOT NULL
+);
+
+INSERT INTO Oikeudet (Merkkijono, Oikeus) VALUES ('6416068d531d179b8de9bcab314dbb4788f4280d', 'Admin');
+INSERT INTO Oikeudet (Merkkijono, Oikeus) VALUES ('831541fd9aa6c3a4fc73241eb9f62eaba34c889b', 'User');
