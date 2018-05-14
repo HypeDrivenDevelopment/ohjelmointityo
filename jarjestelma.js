@@ -47,6 +47,8 @@ function kirjautumisen_tarkistus (data, textStatus, request) {
 	
 	hae_kalenteri();
 	
+	hae_motd();
+	
 	$('#kirjautumiset').addClass('hidden');
 	
 	$('#sisalto').removeClass('hidden');
@@ -57,6 +59,35 @@ function kirjautumisen_tarkistus (data, textStatus, request) {
 	// if data == perus, asdf
 	// if data == admin, asdf+
 }
+
+
+function hae_motd() {
+$.ajax({
+        async: true,
+        url: "/~samipelt/cgi-bin/ohjelmointityo/flask.cgi/hae_motd",
+        type: "GET",
+        dataType: "text",
+        success: motd_lisays,
+        error: ajax_virhe
+});
+}
+
+function lisaa_motd(e) {
+e.preventDefault();
+$.ajax({
+        async: true,
+        url: "/~samipelt/cgi-bin/ohjelmointityo/flask.cgi/lisaa_motd",
+        type: "POST",
+        dataType: "text",
+		
+		data: { "motd":$("#motd").val(),
+        },
+        
+        success: motdlisaaminen_onnistui,
+        error: ajax_virhe
+});	
+}
+
 
 function hae_kalenteri() {
 $.ajax({
@@ -157,6 +188,7 @@ $.ajax({
 
 function muuta_asetukset(e) {
 e.preventDefault();
+hae_motd();
 hae_viestit();
 }
 
@@ -238,6 +270,11 @@ function chatlisaaminen_onnistui(data, textStatus, request) {
 	hae_chat();
 }
 
+function motdlisaaminen_onnistui(data, textStatus, request) {
+	console.log( data );
+	hae_motd();
+}
+
 function poistaminen_onnistui(data, textStatus, request) {
 	console.log( data );
 	hae_viestit();
@@ -251,6 +288,11 @@ function lisaa_viestit(data, textStatus, request) {
 
 function lisaa_chat(data, textStatus, request) {
 	$('#chatviestit').replaceWith( data );
+	console.log( data );
+}
+
+function lisaa_motd(data, textStatus, request) {
+	$('#motdteksti').replaceWith( data );
 	console.log( data );
 }
 

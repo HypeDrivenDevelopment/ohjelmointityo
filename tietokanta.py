@@ -50,6 +50,58 @@ def oikeudet():
         
     Response = make_response(oikeus)
     return Response
+    
+    
+@app.route('/hae_motd', methods=['GET','POST'])
+def hae_motd():
+    
+    con = sqlite3.connect( os.path.abspath('../hidden/viestinta'))
+    con.row_factory = sqlite3.Row
+    
+    cur = con.cursor()
+    
+    try:
+        cur.execute('select Viesti AS Viesti from motd')
+    except:
+        logging.debug( sys.exc_info()[0] )
+    
+    viesti = ""
+    
+    for o in cur:
+        viesti = o["Viesti"]
+    
+    viesti = '<h2 id="motdteksti">' + viesti + '</h2>'
+    
+    con.close()
+        
+    Response = make_response(viesti)
+    return Response
+    
+    
+@app.route('/lisaa_motd', methods=['GET','POST'])
+def lisaa_motd():
+    
+    con = sqlite3.connect( os.path.abspath('../hidden/viestinta'))
+    con.row_factory = sqlite3.Row
+    
+    teksti = request.form.get('teksti', "")
+
+    try:
+        con.execute(
+            "update Motd set Viesti=?", (teksti,))
+            
+    except:
+        con.rollback()
+        Response = make_response("ei toimi")
+        return Response
+            
+    con.commit()
+    con.close()
+
+    resp = make_response("toimii")
+    resp.charset = "UTF-8"
+    resp.mimetype = "text/plain"
+    return resp  
 
     
 @app.route('/hae_viikko', methods=['GET','POST'])
