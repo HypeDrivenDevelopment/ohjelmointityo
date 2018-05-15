@@ -84,11 +84,11 @@ def lisaa_motd():
     con = sqlite3.connect( os.path.abspath('../hidden/viestinta'))
     con.row_factory = sqlite3.Row
     
-    teksti = request.form.get('teksti', "")
+    motd = request.form.get('motd', "")
 
     try:
         con.execute(
-            "update Motd set Viesti=?", (teksti,))
+            "update Motd set Viesti=?", (motd,))
             
     except:
         con.rollback()
@@ -137,6 +137,8 @@ def hae_viikko():
     
     i = 0
     
+    #TODO pakollinen tarkastus: jos kursori on kokonaan tyhjä, niin return "ei tapahtumia"
+    
     for o in cur:
         if o["Deadline"] > maanantai and o["Deadline"] < seuraavamaanantai:
             while i < 7:
@@ -147,7 +149,7 @@ def hae_viikko():
                 vkopaiva = paiva.weekday()
                 
                 if vkopaiva == i:
-                    day = day + o["Viesti"] + " | " + o["Deadline"] + "\n"
+                    day = day + o["Viesti"] + " | " + o["Deadline"] + "<br>"
                     break
                 else:
                     dayb = "<td>" + day + "</td>"
@@ -332,6 +334,7 @@ def lisaa_tietokantaan():
     nimi = request.form.get('nimi', "")
     viesti = request.form.get('viesti', "")
     poisto = request.form.get('poisto', "False")
+    deadline = request.form.get('deadline', "")
 
     indeksi = None
     
@@ -340,8 +343,8 @@ def lisaa_tietokantaan():
     
     try:
         con.execute(
-            "INSERT INTO Viestit VALUES (?, ?, ?, ?, ?)",
-            (indeksi, nimi, viesti, today, poisto))
+            "INSERT INTO Viestit VALUES (?, ?, ?, ?, ?, ?)",
+            (indeksi, nimi, viesti, today, poisto, deadline))
             
     except:
         con.rollback()

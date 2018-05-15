@@ -31,7 +31,9 @@ function kirjautumisen_tarkistus (data, textStatus, request) {
 	if (data == "Admin") {
 	$("#laheta").on("click", lisaa_tietokantaan);
 	
-	$("#muuta").on("click", muuta_asetukset);
+	$("#muuta").on("click", hae_viestitevent);
+	
+	$("#vaihda").on("click", lisaa_motd);
 	
 	$("#send").on("click", lisaa_chattietokantaan);
 	
@@ -54,10 +56,40 @@ function kirjautumisen_tarkistus (data, textStatus, request) {
 	$('#sisalto').removeClass('hidden');
 	}
 	
+	if (data == "User") {
+	$("#laheta").on("click", lisaa_tietokantaan);
+	
+	$("#muuta").on("click", hae_viestitevent);
+	
+	$("#vaihda").on("click", ei_oikeuksia);
+	
+	$("#send").on("click", lisaa_chattietokantaan);
+	
+	$("#tyhjenna").on("click", ei_oikeuksia);
+	
+	$("#nayta").on("click", hae_kaikkiviestit);
+	
+	$("#hae").on("click", hae_hakusanalla);
+	
+	hae_viestit();
+	
+	hae_chat();
+	
+	hae_kalenteri();
+	
+	hae_motd();
+	
+	$('#kirjautumiset').addClass('hidden');
+	
+	$('#sisalto').removeClass('hidden');
+	}
+	
 	console.log( data );
 	
-	// if data == perus, asdf
-	// if data == admin, asdf+
+}
+
+function ei_oikeuksia() {
+	console.log("ei oikeuksia")
 }
 
 
@@ -67,7 +99,7 @@ $.ajax({
         url: "/~samipelt/cgi-bin/ohjelmointityo/flask.cgi/hae_motd",
         type: "GET",
         dataType: "text",
-        success: motd_lisays,
+        success: paivita_motd,
         error: ajax_virhe
 });
 }
@@ -186,9 +218,8 @@ $.ajax({
 });		
 }
 
-function muuta_asetukset(e) {
+function hae_viestitevent(e) {
 e.preventDefault();
-hae_motd();
 hae_viestit();
 }
 
@@ -247,6 +278,7 @@ $.ajax({
 		data: { "nimi":$("#kayttaja").val(),
         "viesti":$("#viesti").val(),
 		"poisto":check,
+		"deadline":$("#deadline").val(),
         },
         
         success: lisaaminen_onnistui,
@@ -291,7 +323,7 @@ function lisaa_chat(data, textStatus, request) {
 	console.log( data );
 }
 
-function lisaa_motd(data, textStatus, request) {
+function paivita_motd(data, textStatus, request) {
 	$('#motdteksti').replaceWith( data );
 	console.log( data );
 }

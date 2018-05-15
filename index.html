@@ -11,8 +11,6 @@
 
 <h1> Viestintäjärjestelmä </h1>
 
-<h2 id="motdteksti">Päivän viesti</h2>
-
 <div id="kirjautumiset">
 <form id="kirjautuminen" name="kirjautuminen">
 <fieldset>
@@ -35,18 +33,13 @@
 </form>
 </div>
 <div id="sisalto" class="hidden">
-<div>
 
-<p id="uudet">
-Uusimmat viestit:
-</p>
-
-</div> 
+<h2 id="motdteksti">Päivän viesti</h2>
 
 <div>
 
 <p>
-Kaikki viestit määrätyltä ajalta:
+Uudet viestit:
 </p>
 
 <p id="taulu">
@@ -64,6 +57,7 @@ Viestit tulee tähän
 <input type="text" id="hakusana" name="hakusana"/>
 
 <p><input type="submit" name="hae" id="hae" value="Hae!" /></p>
+<p><input type="submit" name="nayta" id="nayta" value="Näytä kaikki" /></p>
 
 </fieldset>
 </form>
@@ -71,12 +65,7 @@ Viestit tulee tähän
 <form id="lomake" name="lomake">
 <fieldset>
 <legend>Lisäys</legend>
-<div>
 
-<label for="nimi">Nimi: </label>
-<input type="text" id="nimi" name="nimi"/>
-
-</div>
 <div>
 
 <label for="viesti">Viesti: </label>
@@ -87,8 +76,15 @@ Viestit tulee tähän
 <label for="poisto">Poista automaattisesti: </label>
 <input type="checkbox" id="poisto" name="poisto"/>
 
+<div>
+
+<label for="deadline">Deadline: </label>
+<input type="text" id="deadline" name="deadline"/>
+
+</div>
+
 <p><input type="submit" name="laheta" id="laheta" value="Lähetä!" /></p>
-<p><input type="submit" name="nayta" id="nayta" value="Näytä kaikki" /></p>
+
 </fieldset>
 
 </form>
@@ -117,7 +113,7 @@ Tähän tulee chat viestejä
 </table>
 
 <p>
-Kustomointi asetuksille: <!-- uusimpien viestien määrä, tietyn ajan viestien määrä,...  -->
+Asetukset:
 </p>
 
 <form id="asetukset" name="asetukset">
@@ -129,13 +125,14 @@ Kustomointi asetuksille: <!-- uusimpien viestien määrä, tietyn ajan viestien 
 <input type="text" id="maara" name="maara" value="10"/>
 
 </div>
+<p><input type="submit" name="muuta" id="muuta" value="Muuta!" /></p>
 <div>
 
 <label for="motd">Päivän viesti:</label>
 <input type="text" id="motd" name="motd"/>
 
 </div>
-<p><input type="submit" name="muuta" id="muuta" value="Muuta!" /></p>
+<p><input type="submit" name="vaihda" id="vaihda" value="Vaihda!" /></p>
 </fieldset>
 </div>
 

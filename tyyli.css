@@ -2,6 +2,11 @@ h1 {
   text-align: center;
 }
 
+h2 {
+  text-align: center;
+  font-style: italic;
+}
+
 li {
 	margin-bottom: 1em;
 	background-color: LightGrey;
