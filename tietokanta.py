@@ -137,16 +137,8 @@ def hae_viikko():
     
     i = 0
     
-    #TODO pakollinen tarkastus: jos kursori on kokonaan tyhjä, niin return "ei tapahtumia"
-    tarkastus = cur.fetchone()	
-    if tarkastus is None:
-        resp = make_response("ei tapahtumia", 200)
-        resp.charset = "UTF-8"
-        resp.mimetype = "text/plain"
-        return resp
-    
     for o in cur:
-        if o["Deadline"] > maanantai and o["Deadline"] < seuraavamaanantai:
+        if o["Deadline"] >= maanantai and o["Deadline"] < seuraavamaanantai:
             while i < 7:
                 paivastr = o["Deadline"]
 
@@ -165,12 +157,14 @@ def hae_viikko():
     
     if day != "":
         dayb = "<td>" + day + "</td>"
-        viikko = viikko + dayb    
+        viikko = viikko + dayb
+        i += 1
     
     if i < 6:
-        erotus = 6 - i
+        erotus = 7 - i
         while erotus > 0:
             viikko = viikko + "<td>""</td>"
+            erotus -= 1
     
     viikko = "<tr>" + viikko + "</tr>"
     viikko = otsikot + viikko
@@ -184,7 +178,7 @@ def hae_viikko():
     return resp
     
 
-# Viestitietokannasta viikon vanhat viestit poistava funktio, joka palauttaa tiedon onnistumisesta.
+# Viestitietokannasta viikon deadlinesta vanhentuneet viestit poistava funktio, joka palauttaa tiedon onnistumisesta.
 @app.route('/poista_vanhat', methods=['GET','POST'])
 def poista_vanhat():
 
@@ -195,7 +189,7 @@ def poista_vanhat():
     week = today + timedelta(days=-7)
 
     try:
-        con.execute('delete from Viestit WHERE Paiva<? and Poisto="True"', (week,)) #vaihda deadlineks
+        con.execute('delete from Viestit WHERE Deadline<? and Poisto="True" and not Deadline=""', (week,)) 
     except:
         con.rollback()
         Response = make_response("ei toimi")
@@ -238,13 +232,13 @@ def hae_viestit():
     
     if haku == False:
         try:
-            cur.execute('select Nimi AS Nimi, Viesti AS Viesti, ViestiID AS ViestiID, Paiva AS Paiva from Viestit order by ViestiID desc')
+            cur.execute('select Nimi AS Nimi, Viesti AS Viesti, ViestiID AS ViestiID, Paiva AS Paiva, Deadline AS Deadline, Lisatiedot AS Lisatiedot from Viestit order by ViestiID desc')
         except:
             logging.debug( sys.exc_info()[0] )
             
     else:
         try:
-            cur.execute("select Nimi AS Nimi, Viesti AS Viesti, ViestiID AS ViestiID, Paiva AS Paiva from Viestit where Viesti like ? order by ViestiID desc", ('%'+hakusana+'%',))
+            cur.execute("select Nimi AS Nimi, Viesti AS Viesti, ViestiID AS ViestiID, Paiva AS Paiva, Deadline AS Deadline, Lisatiedot AS Lisatiedot from Viestit where Viesti like ? order by ViestiID desc", ('%'+hakusana+'%',))
         except:
             logging.debug( sys.exc_info()[0] )
     
@@ -253,7 +247,7 @@ def hae_viestit():
     for o in cur:
         numero = o["ViestiID"]
         merkkijono = str (numero)
-        viestit = viestit + "<li class='poista' id='" + merkkijono + "'>" + o["Nimi"] + " | " + o["Viesti"] + " | " + o["Paiva"] + "</li>"
+        viestit = viestit + "<li class='poista' id='" + merkkijono + "'>" + "L&auml;hett&auml;j&auml;: " + o["Nimi"] + " &emsp; " + "Viesti: " + o["Viesti"] + " &emsp; " + "Lis&auml;&auml;misp&auml;iv&auml;: " + o["Paiva"] + " &emsp; " + "Deadline: " + o["Deadline"] + " &emsp; " + "Lis&auml;tiedot: " + o["Lisatiedot"] + "</li>"
         if i == maara:
             break
         i += 1
@@ -341,6 +335,7 @@ def lisaa_tietokantaan():
     viesti = request.form.get('viesti', "")
     poisto = request.form.get('poisto', "False")
     deadline = request.form.get('deadline', "")
+    lisatiedot = request.form.get('lisatiedot', "")
 
     indeksi = None
     
@@ -349,8 +344,8 @@ def lisaa_tietokantaan():
     
     try:
         con.execute(
-            "INSERT INTO Viestit VALUES (?, ?, ?, ?, ?, ?)",
-            (indeksi, nimi, viesti, today, poisto, deadline))
+            "INSERT INTO Viestit VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (indeksi, nimi, viesti, today, poisto, deadline, lisatiedot))
             
     except:
         con.rollback()

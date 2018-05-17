@@ -16,6 +16,10 @@ tr#chatviestit td {
 	display:block;
 }
 
+table#kalenteri td {
+	border: medium solid black;
+}
+
 .hidden {
   display: none;
 }

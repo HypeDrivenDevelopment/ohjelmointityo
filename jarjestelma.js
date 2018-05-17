@@ -298,6 +298,7 @@ $.ajax({
         "viesti":$("#viesti").val(),
 		"poisto":check,
 		"deadline":$("#deadline").val(),
+		"lisatiedot":$("#lisatiedot").val(),
         },
         
         success: lisaaminen_onnistui,
@@ -314,6 +315,7 @@ function lisaaminen_onnistui(data, textStatus, request) {
 	console.log( data );
 	$("#viesti").val(null);
 	$("#deadline").val(null);
+	$("#lisatiedot").val(null);
 	hae_viestit();
 	hae_kalenteri();
 }
