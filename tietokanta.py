@@ -138,6 +138,12 @@ def hae_viikko():
     i = 0
     
     #TODO pakollinen tarkastus: jos kursori on kokonaan tyhjä, niin return "ei tapahtumia"
+    tarkastus = cur.fetchone()	
+    if tarkastus is None:
+        resp = make_response("ei tapahtumia", 200)
+        resp.charset = "UTF-8"
+        resp.mimetype = "text/plain"
+        return resp
     
     for o in cur:
         if o["Deadline"] > maanantai and o["Deadline"] < seuraavamaanantai:

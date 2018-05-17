@@ -51,6 +51,10 @@ function kirjautumisen_tarkistus (data, textStatus, request) {
 	
 	hae_motd();
 	
+	var ajastus = setInterval(ajastin, 600000)
+	
+	var chatajastus = setInterval(chatajastin, 5000)
+	
 	$('#kirjautumiset').addClass('hidden');
 	
 	$('#sisalto').removeClass('hidden');
@@ -79,6 +83,10 @@ function kirjautumisen_tarkistus (data, textStatus, request) {
 	
 	hae_motd();
 	
+	var ajastus = setInterval(ajastin, 600000)
+	
+	var chatajastus = setInterval(chatajastin, 5000)
+	
 	$('#kirjautumiset').addClass('hidden');
 	
 	$('#sisalto').removeClass('hidden');
@@ -86,6 +94,16 @@ function kirjautumisen_tarkistus (data, textStatus, request) {
 	
 	console.log( data );
 	
+}
+
+function ajastin() {
+	hae_viestit();
+	
+	hae_kalenteri();
+}
+
+function chatajastin() {
+	hae_chat();
 }
 
 function ei_oikeuksia() {
@@ -268,6 +286,7 @@ if ($('#poisto').is(":checked"))
 {
   check = true
 }
+
 console.log( check );
 $.ajax({
         async: true,
@@ -293,12 +312,15 @@ function tyhjennys_onnistui(data, textStatus, request) {
 
 function lisaaminen_onnistui(data, textStatus, request) {
 	console.log( data );
+	$("#viesti").val(null);
+	$("#deadline").val(null);
 	hae_viestit();
 	hae_kalenteri();
 }
 
 function chatlisaaminen_onnistui(data, textStatus, request) {
 	console.log( data );
+	$("#message").val(null);
 	hae_chat();
 }
 
