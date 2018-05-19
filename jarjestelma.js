@@ -4,6 +4,9 @@ window.onload = function() {
 
 }
 
+var ajastus;
+var chatajastus;
+
 /*
 Funktio joka lähettää käyttäjän syöttämät nimen ja salasanan ajaxilla tarkistettavaksi.
 */
@@ -43,6 +46,8 @@ function kirjautumisen_tarkistus (data, textStatus, request) {
 	
 	$("#hae").on("click", hae_hakusanalla);
 	
+	$("#aseta").on("click", aseta_ajastukset);
+	
 	hae_viestit();
 	
 	hae_chat();
@@ -51,9 +56,7 @@ function kirjautumisen_tarkistus (data, textStatus, request) {
 	
 	hae_motd();
 	
-	var ajastus = setInterval(ajastin, 600000)
-	
-	var chatajastus = setInterval(chatajastin, 5000)
+	alusta_ajastukset();
 	
 	$('#kirjautumiset').addClass('hidden');
 	
@@ -75,6 +78,8 @@ function kirjautumisen_tarkistus (data, textStatus, request) {
 	
 	$("#hae").on("click", hae_hakusanalla);
 	
+	$("#aseta").on("click", aseta_ajastukset);
+	
 	hae_viestit();
 	
 	hae_chat();
@@ -83,9 +88,7 @@ function kirjautumisen_tarkistus (data, textStatus, request) {
 	
 	hae_motd();
 	
-	var ajastus = setInterval(ajastin, 600000)
-	
-	var chatajastus = setInterval(chatajastin, 5000)
+	alusta_ajastukset();
 	
 	$('#kirjautumiset').addClass('hidden');
 	
@@ -94,6 +97,22 @@ function kirjautumisen_tarkistus (data, textStatus, request) {
 	
 	console.log( data );
 	
+}
+
+
+function alusta_ajastukset() {
+	var intervalli = $("#intervalli").val();
+	ajastus = setInterval(ajastin, intervalli)
+	chatajastus = setInterval(chatajastin, 5000)
+}
+
+function aseta_ajastukset(e) {
+	e.preventDefault();
+	clearInterval(ajastus);
+	clearInterval(chatajastus);
+	var intervalli = $("#intervalli").val();
+	ajastus = setInterval(ajastin, intervalli)
+	chatajastus = setInterval(chatajastin, 5000)
 }
 
 function ajastin() {
@@ -334,6 +353,7 @@ function motdlisaaminen_onnistui(data, textStatus, request) {
 function poistaminen_onnistui(data, textStatus, request) {
 	console.log( data );
 	hae_viestit();
+	hae_kalenteri();
 }
 
 function lisaa_viestit(data, textStatus, request) {
