@@ -284,7 +284,9 @@ def hae_chat():
             break
         i += 1
         
-    viestit = '<tr id="chatviestit">' + viestit + '</tr>' 
+    viestit = '<tr>' + viestit + '</tr>'
+
+    viestit = '<table id="chatviestit">' + viestit + '</table>' 
     
     con.close()
 

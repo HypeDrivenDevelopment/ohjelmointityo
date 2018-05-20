@@ -12,7 +12,7 @@ li {
 	background-color: LightGrey;
 }
 
-tr#chatviestit td {
+table#chatviestit td {
 	display:block;
 }
 
@@ -22,4 +22,18 @@ table#kalenteri td {
 
 .hidden {
   display: none;
+}
+
+#wrapper {
+  position:relative;
+  width: 20em;
+}
+#scroll {
+  height: 200px;
+  overflow:auto;  
+  margin-top:20px;
+}
+#wrapper table {
+  width:100%;
+
 }
