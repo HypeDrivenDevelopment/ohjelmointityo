@@ -37,3 +37,18 @@ table#kalenteri td {
   width:100%;
 
 }
+
+#hakulomake {
+  width: 20%;
+  float: left;
+}
+
+#lomake {
+  width: 50%;
+  float: left;
+}
+
+#chat {
+  width: 20%;
+  float: left;
+}

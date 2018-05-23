@@ -271,18 +271,18 @@ def hae_chat():
     cur = con.cursor()
     
     try:
-        cur.execute('select Teksti AS Teksti, ChatID AS ChatID from Chat order by ChatID desc') 
+        cur.execute('select Teksti AS Teksti, ChatID AS ChatID from Chat order by ChatID') 
     except:
         logging.debug( sys.exc_info()[0] )
         
-    maara = 10
-    i = 1
+    #maara = 10
+    #i = 1
     viestit = ""
     for o in cur:
         viestit = viestit + "<td>" + o["Teksti"] + "</td>"
-        if i == maara:
-            break
-        i += 1
+        #if i == maara:
+        #    break
+        #i += 1
         
     viestit = '<tr>' + viestit + '</tr>'
 
