@@ -18,6 +18,7 @@ table#chatviestit td {
 
 table#kalenteri td {
 	border: medium solid black;
+	width: 12em;
 }
 
 .hidden {

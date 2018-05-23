@@ -213,6 +213,8 @@ $.ajax({
         dataType: "text",
 		
 		data: { "message":$("#message").val(),
+		"kayttaja":$("#kayttaja").val(),
+		
         },
         
         success: chatlisaaminen_onnistui,

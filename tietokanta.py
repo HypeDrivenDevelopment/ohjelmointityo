@@ -271,18 +271,13 @@ def hae_chat():
     cur = con.cursor()
     
     try:
-        cur.execute('select Teksti AS Teksti, ChatID AS ChatID from Chat order by ChatID') 
+        cur.execute('select Teksti AS Teksti, ChatID AS ChatID, Kayttaja AS Kayttaja from Chat order by ChatID') 
     except:
         logging.debug( sys.exc_info()[0] )
         
-    #maara = 10
-    #i = 1
     viestit = ""
     for o in cur:
-        viestit = viestit + "<td>" + o["Teksti"] + "</td>"
-        #if i == maara:
-        #    break
-        #i += 1
+        viestit = viestit + "<td>" + o["Kayttaja"] + " : " + o["Teksti"] + "</td>"
         
     viestit = '<tr>' + viestit + '</tr>'
 
@@ -304,13 +299,14 @@ def lisaa_chattietokantaan():
     con.row_factory = sqlite3.Row
     
     teksti = request.form.get('message', "")
+    kayttaja = request.form.get('kayttaja', "")
 
     indeksi = None
     
     try:
         con.execute(
-            "INSERT INTO Chat VALUES (?, ?)",
-            (indeksi, teksti))
+            "INSERT INTO Chat VALUES (?, ?, ?)",
+            (indeksi, teksti, kayttaja))
             
     except:
         con.rollback()

@@ -30,14 +30,15 @@ INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto, Deadline, Lisatiedot) VALUES (
 
 CREATE TABLE Chat (
 ChatID INTEGER PRIMARY KEY AUTOINCREMENT,
-Teksti VARCHAR(50) NOT NULL
+Teksti VARCHAR(50) NOT NULL,
+Kayttaja VARCHAR(50) NOT NULL
 );
 
-INSERT INTO Chat (Teksti) VALUES ('Haloo');
-INSERT INTO Chat (Teksti) VALUES ('Mitas');
-INSERT INTO Chat (Teksti) VALUES ('hoi');
-INSERT INTO Chat (Teksti) VALUES ('asdf');
-INSERT INTO Chat (Teksti) VALUES ('123123');
+INSERT INTO Chat (Teksti, Kayttaja) VALUES ('Haloo', 'Jarmo');
+INSERT INTO Chat (Teksti, Kayttaja) VALUES ('Mitas', 'Pekka');
+INSERT INTO Chat (Teksti, Kayttaja) VALUES ('hoi', 'Admin');
+INSERT INTO Chat (Teksti, Kayttaja) VALUES ('asdf', 'Admin');
+INSERT INTO Chat (Teksti, Kayttaja) VALUES ('123123', 'Jorma');
 
 CREATE TABLE Oikeudet (
 OikeusID INTEGER PRIMARY KEY AUTOINCREMENT,
