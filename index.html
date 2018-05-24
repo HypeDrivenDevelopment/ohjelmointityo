@@ -1,154 +1,155 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8"/>
-  <title>Viestintäjärjestelmä</title> 
-  <link href="tyyli.css" rel="StyleSheet" type="text/css" />
-  <script type="text/javascript" src="jquery-3.2.1.js"></script>
-  <script type="text/javascript" src="jarjestelma.js"></script>
-</head>
-<body>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Viestintäjärjestelmä</title> 
+		<link href="tyyli.css" rel="StyleSheet" type="text/css" />
+		<script type="text/javascript" src="jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="jarjestelma.js"></script>
+	</head>
+	<body>
 
-<h1> Viestintäjärjestelmä </h1>
+		<h1> Viestintäjärjestelmä </h1>
 
-<div id="kirjautumiset">
-<form id="kirjautuminen" name="kirjautuminen">
-<fieldset>
-<legend>Kirjaudu</legend>
-<div>
+		<div id="kirjautumiset">
+			<form id="kirjautuminen" name="kirjautuminen">
+				<fieldset>
+					<legend>Kirjaudu</legend>
+					<div>
 
-<label for="kayttaja">Käyttäjä: </label>
-<input type="text" id="kayttaja" name="kayttaja"/>
+						<label for="kayttaja">Käyttäjä: </label>
+						<input type="text" id="kayttaja" name="kayttaja"/>
 
-</div>
-<div>
+					</div>
+					<div>
 
-<label for="salasana">Salasana: </label>
-<input type="password" id="salasana" name="salasana"/>
+						<label for="salasana">Salasana: </label>
+						<input type="password" id="salasana" name="salasana"/>
 
-</div>
-<p><input type="submit" name="kirjaudu" id="kirjaudu" value="Kirjaudu!" /></p>
-</fieldset>
+					</div>
+					<p><input type="submit" name="kirjaudu" id="kirjaudu" value="Kirjaudu!" /></p>
+				</fieldset>
 
-</form>
-</div>
-<div id="sisalto" class="hidden">
+			</form>
+		</div>
+		<div id="sisalto" class="hidden">
 
-<h2 id="motdteksti">Päivän viesti</h2>
+			<h2 id="motdteksti">Päivän viesti</h2>
 
-<div>
+			<div>
 
-<p>
-Uudet viestit:
-</p>
+				<p>
+					Uudet viestit:
+				</p>
 
-<p id="taulu">
-Viestit tulee tähän
-</p>
+				<p id="taulu">
+					Viestit tulee tähän
+				</p>
 
-</div> 
+			</div> 
 
-<table id="kalenteri" name="kalenteri">
-</table>
+			<table id="kalenteri">
+			</table>
 
-<form id="hakulomake" name="hakulomake">
-<fieldset>
-<legend>Haku</legend>
+			<form id="hakulomake" name="hakulomake">
+				<fieldset>
+					<legend>Haku</legend>
 
-<label for="hakusana">Hae viestejä hakusanalla: </label>
-<input type="text" id="hakusana" name="hakusana"/>
+					<label for="hakusana">Hae viestejä hakusanalla: </label>
+					<input type="text" id="hakusana" name="hakusana"/>
 
-<p><input type="submit" name="hae" id="hae" value="Hae!" /></p>
-<p><input type="submit" name="nayta" id="nayta" value="Näytä kaikki" /></p>
+					<p><input type="submit" name="hae" id="hae" value="Hae!" /></p>
+					<p><input type="submit" name="nayta" id="nayta" value="Näytä kaikki" /></p>
 
-</fieldset>
-</form>
+				</fieldset>
+			</form>
 
-<form id="lomake" name="lomake">
-<fieldset>
-<legend>Lisäys</legend>
+			<form id="lomake" name="lomake">
+				<fieldset>
+					<legend>Lisäys</legend>
 
-<div>
+					<div>
 
-<label for="viesti">Viesti: </label>
-<input type="text" id="viesti" name="viesti"/>
+						<label for="viesti">Viesti: </label>
+						<input type="text" id="viesti" name="viesti"/>
 
-</div>
+					</div>
 
-<div>
+					<div>
 
-<label for="lisatiedot">Lisätiedot: </label>
-<input type="text" id="lisatiedot" name="lisatiedot"/>
+						<label for="lisatiedot">Lisätiedot: </label>
+						<input type="text" id="lisatiedot" name="lisatiedot"/>
 
-</div>
+					</div>
 
-<div>
+					<div>
 
-<label for="deadline">Deadline: </label>
-<input type="date" id="deadline" name="deadline"/>
+						<label for="deadline">Deadline: </label>
+						<input type="date" id="deadline" name="deadline"/>
 
-</div>
+					</div>
 
-<label for="poisto">Poista automaattisesti viikon kuluttua deadlinesta: </label>
-<input type="checkbox" id="poisto" name="poisto"/>
+					<label for="poisto">Poista automaattisesti viikon kuluttua deadlinesta: </label>
+					<input type="checkbox" id="poisto" name="poisto"/>
 
-<p><input type="submit" name="laheta" id="laheta" value="Lähetä!" /></p>
+					<p><input type="submit" name="laheta" id="laheta" value="Lähetä!" /></p>
 
-</fieldset>
+				</fieldset>
 
-</form>
+			</form>
 
-<form id="chat" name="chat">
-<fieldset>
-<legend>Chat</legend>
-<div id="wrapper">
-<div id="scroll">
-<table id="chatviestit">
-</table>
-</div>
-</div>
+			<form id="chat" name="chat">
+				<fieldset>
+					<legend>Chat</legend>
+					<div id="wrapper">
+						<div id="scroll">
+							<table id="chatviestit">
+							</table>
+						</div>
+					</div>
 
-<div>
+					<div>
 
-<label for="message">Viesti: </label>
-<input type="text" id="message" name="massage"/>
+						<label for="message">Viesti: </label>
+						<input type="text" id="message" name="massage"/>
 
-</div>
-<p><input type="submit" name="send" id="send" value="Lähetä!" /></p>
-<p><input type="submit" name="tyhjenna" id="tyhjenna" value="Tyhjennä!" /></p>
-</fieldset>
+					</div>
+					<p><input type="submit" name="send" id="send" value="Lähetä!" /></p>
+					<p><input type="submit" name="tyhjenna" id="tyhjenna" value="Tyhjennä!" /></p>
+				</fieldset>
 
-</form>
+			</form>
 
-<form id="asetukset" name="asetukset">
-<fieldset>
-<legend>Asetukset</legend>
-<div>
+			<form id="asetukset" name="asetukset">
+				<fieldset>
+					<legend>Asetukset</legend>
+					<div>
 
-<label for="maara">Uusien viestien määrä: </label>
-<input type="text" id="maara" name="maara" value="10"/>
+						<label for="maara">Uusien viestien määrä: </label>
+						<input type="text" id="maara" name="maara" value="10"/>
 
-</div>
-<p><input type="submit" name="muuta" id="muuta" value="Muuta!" /></p>
-<div>
+					</div>
+					<p><input type="submit" name="muuta" id="muuta" value="Muuta!" /></p>
+					<div>
 
-<label for="motd">Päivän viesti:</label>
-<input type="text" id="motd" name="motd"/>
+						<label for="motd">Päivän viesti:</label>
+						<input type="text" id="motd" name="motd"/>
 
-</div>
+					</div>
 
-<p><input type="submit" name="vaihda" id="vaihda" value="Vaihda!" /></p>
-<div>
+					<p><input type="submit" name="vaihda" id="vaihda" value="Vaihda!" /></p>
+					<div>
 
-<label for="intervalli">Hae viestit n millisekunnin välein:</label>
-<input type="text" id="intervalli" name="intervalli" value="60000"/>
+						<label for="intervalli">Hae viestit n millisekunnin välein:</label>
+						<input type="text" id="intervalli" name="intervalli" value="60000"/>
 
-</div>
-<div>
-<p><input type="submit" name="aseta" id="aseta" value="Aseta!" /></p>
-</fieldset>
-</div>
-</form>
+					</div>
+					<div>
+						<p><input type="submit" name="aseta" id="aseta" value="Aseta!" /></p>
+					</div>
+				</fieldset>
+			</form>
+		</div>
 
-</body>
+	</body>
 </html>
