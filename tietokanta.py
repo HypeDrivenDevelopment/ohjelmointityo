@@ -6,7 +6,6 @@ from datetime import date
 from datetime import timedelta
 from datetime import datetime
 import time
-import datetime
 import hashlib
 import sqlite3
 import logging
@@ -35,7 +34,10 @@ def oikeudet():
     try:
         cur.execute('select Oikeus AS Oikeus from Oikeudet where Merkkijono=?', (encoded,))
     except:
-        logging.debug( sys.exc_info()[0] )
+        Response = make_response("ei toimi")
+        Response.charset = "UTF-8"
+        Response.mimetype = "text/plain"
+        return Response
     
     oikeus = ""
     
@@ -46,12 +48,17 @@ def oikeudet():
         
     if oikeus == "":
         Response = make_response("false")
+        Response.charset = "UTF-8"
+        Response.mimetype = "text/plain"
         return Response
         
     Response = make_response(oikeus)
+    Response.charset = "UTF-8"
+    Response.mimetype = "text/plain"
     return Response
     
     
+# Päivän viestin tietokannasta hakeva funktio, joka palauttaa viestin otsikkomuodossa.    
 @app.route('/hae_motd', methods=['GET','POST'])
 def hae_motd():
     
@@ -63,7 +70,10 @@ def hae_motd():
     try:
         cur.execute('select Viesti AS Viesti from motd')
     except:
-        logging.debug( sys.exc_info()[0] )
+        Response = make_response("ei toimi")
+        Response.charset = "UTF-8"
+        Response.mimetype = "text/plain"
+        return Response
     
     viesti = ""
     
@@ -77,7 +87,8 @@ def hae_motd():
     Response = make_response(viesti)
     return Response
     
-    
+
+# Päivän viestin tietokantaan muuttava funktio.    
 @app.route('/lisaa_motd', methods=['GET','POST'])
 def lisaa_motd():
     
@@ -93,17 +104,20 @@ def lisaa_motd():
     except:
         con.rollback()
         Response = make_response("ei toimi")
+        Response.charset = "UTF-8"
+        Response.mimetype = "text/plain"
         return Response
             
     con.commit()
     con.close()
 
-    resp = make_response("toimii")
-    resp.charset = "UTF-8"
-    resp.mimetype = "text/plain"
-    return resp  
+    Response = make_response("toimii")
+    Response.charset = "UTF-8"
+    Response.mimetype = "text/plain"
+    return Response  
 
-    
+ 
+# Taulukkomuotoisen näkymän kuluvan viikon deadlineista hakeva funktio. 
 @app.route('/hae_viikko', methods=['GET','POST'])
 def hae_viikko():
 
@@ -111,7 +125,7 @@ def hae_viikko():
     
     today = date.today()
 
-    maanantai = today + timedelta(days=-(luku)) # saadaan maanantai
+    maanantai = today + timedelta(days=-(luku)) # saadaan kuluvan viikon maanantai
     
     seuraavamaanantai = maanantai + timedelta(days=7)
     
@@ -127,18 +141,25 @@ def hae_viikko():
     try:
         cur.execute('select Viesti AS Viesti, Deadline AS Deadline from Viestit where Deadline is not null order by Deadline')
     except:
-        logging.debug( sys.exc_info()[0] )
+        Response = make_response("ei toimi")
+        Response.charset = "UTF-8"
+        Response.mimetype = "text/plain"
+        return Response
          
     viikko = ""
     day = ""
     dayb = ""
     
+    # Taulukon luominen: Ensin luodaan otsikkosolut viikonpäiville.
     otsikot = "<tr><th>Maanantai</th><th>Tiistai</th><th>Keskiviikko</th><th>Torstai</th><th>Perjantai</th><th>Lauantai</th><th>Sunnuntai</th></tr>"
     
     i = 0
     
+    # Sitten testataan järjestyksessä olevia deadlineja, osuvatko ne kuluvalle viikolle.
     for o in cur:
         if o["Deadline"] >= maanantai and o["Deadline"] < seuraavamaanantai:
+        
+            # Jos osuu, niin testataan osuuko päivä indeksin osoittamalle viikonpäivälle ja mahdollisesti lisätään se merkkijonoon
             while i < 7:
                 paivastr = o["Deadline"]
 
@@ -149,17 +170,21 @@ def hae_viikko():
                 if vkopaiva == i:
                     day = day + o["Viesti"] + " | " + o["Deadline"] + "<br>"
                     break
+                
+                # Jollei osunut niin päätetään käsiteltävä päivä lisäämällä solutagit saatujen deadlinejen ympärille ja siirrytään seuraavaan päivään.
                 else:
                     dayb = "<td>" + day + "</td>"
                     viikko = viikko + dayb
                     i += 1
                     day = ""
     
+    # Lisätään vielä mahdollisesti äsken day muuttujaan jäänyt deadline taulukkoon.
     if day != "":
         dayb = "<td>" + day + "</td>"
         viikko = viikko + dayb
         i += 1
     
+    # Jos viikossa ei ollut deadlineja loppuviikosta tai koko viikkona niin täydennetään sinne kuitenkin tyhjiä soluja.
     if i < 6:
         erotus = 7 - i
         while erotus > 0:
@@ -172,10 +197,10 @@ def hae_viikko():
     
     con.close()
 
-    resp = make_response(viikko, 200)
-    resp.charset = "UTF-8"
-    resp.mimetype = "text/plain"
-    return resp
+    Response = make_response(viikko, 200)
+    Response.charset = "UTF-8"
+    Response.mimetype = "text/plain"
+    return Response
     
 
 # Viestitietokannasta viikon deadlinesta vanhentuneet viestit poistava funktio, joka palauttaa tiedon onnistumisesta.
@@ -193,15 +218,17 @@ def poista_vanhat():
     except:
         con.rollback()
         Response = make_response("ei toimi")
+        Response.charset = "UTF-8"
+        Response.mimetype = "text/plain"
         return Response
         
     con.commit()
     con.close()
 
-    resp = make_response("toimii")
-    resp.charset = "UTF-8"
-    resp.mimetype = "text/plain"
-    return resp
+    Response = make_response("toimii")
+    Response.charset = "UTF-8"
+    Response.mimetype = "text/plain"
+    return Response
 
 
 # Viestitietokannasta kaikki viestit hakeva funktio, joka syötteen perusteella palauttaa n-kappaletta uusinta viestiä listamuodossa.
@@ -234,13 +261,19 @@ def hae_viestit():
         try:
             cur.execute('select Nimi AS Nimi, Viesti AS Viesti, ViestiID AS ViestiID, Paiva AS Paiva, Deadline AS Deadline, Lisatiedot AS Lisatiedot from Viestit order by ViestiID desc')
         except:
-            logging.debug( sys.exc_info()[0] )
+            Response = make_response("ei toimi")
+            Response.charset = "UTF-8"
+            Response.mimetype = "text/plain"
+            return Response
             
     else:
         try:
             cur.execute("select Nimi AS Nimi, Viesti AS Viesti, ViestiID AS ViestiID, Paiva AS Paiva, Deadline AS Deadline, Lisatiedot AS Lisatiedot from Viestit where Viesti like ? order by ViestiID desc", ('%'+hakusana+'%',))
         except:
-            logging.debug( sys.exc_info()[0] )
+            Response = make_response("ei toimi")
+            Response.charset = "UTF-8"
+            Response.mimetype = "text/plain"
+            return Response
     
     i = 1
     viestit = ""
@@ -256,12 +289,12 @@ def hae_viestit():
     
     con.close()
 
-    resp = make_response(viestit, 200)
-    resp.charset = "UTF-8"
-    resp.mimetype = "text/plain"
-    return resp
+    Response = make_response(viestit, 200)
+    Response.charset = "UTF-8"
+    Response.mimetype = "text/plain"
+    return Response
 
-# Chattietokannasta viestit hakeva funktio, joka palauttaa maksimissaan 10 uusinta viestiä taulukkomuodossa.    
+# Chattietokannasta viestit hakeva funktio, joka palauttaa kaikki viestit taulukkomuodossa.    
 @app.route('/hae_chat', methods=['GET','POST'])
 def hae_chat():
 
@@ -273,7 +306,10 @@ def hae_chat():
     try:
         cur.execute('select Teksti AS Teksti, ChatID AS ChatID, Kayttaja AS Kayttaja from Chat order by ChatID') 
     except:
-        logging.debug( sys.exc_info()[0] )
+        Response = make_response("ei toimi")
+        Response.charset = "UTF-8"
+        Response.mimetype = "text/plain"
+        return Response
         
     viestit = ""
     for o in cur:
@@ -285,10 +321,10 @@ def hae_chat():
     
     con.close()
 
-    resp = make_response(viestit, 200)
-    resp.charset = "UTF-8"
-    resp.mimetype = "text/plain"
-    return resp
+    Response = make_response(viestit, 200)
+    Response.charset = "UTF-8"
+    Response.mimetype = "text/plain"
+    return Response
 
     
 # Chattietokantaan viestin lisäävä funktio, joka palauttaa tiedon onnistumisesta.
@@ -311,18 +347,20 @@ def lisaa_chattietokantaan():
     except:
         con.rollback()
         Response = make_response("ei toimi")
+        Response.charset = "UTF-8"
+        Response.mimetype = "text/plain"
         return Response
             
     con.commit()
     con.close()
 
-    resp = make_response("toimii")
-    resp.charset = "UTF-8"
-    resp.mimetype = "text/plain"
-    return resp    
+    Response = make_response("toimii")
+    Response.charset = "UTF-8"
+    Response.mimetype = "text/plain"
+    return Response    
 
 
-# Viestitietokantaan lisäävä funtio, käyttää saatua nimeä, viestiä ja tietoa viestin poistosta, sekä hakee päivämäärän. Palauttaa tiedon onnistumisesta.
+# Viestitietokantaan lisäävä funtio, käyttää saatua nimeä, viestiä, tietoa viestin poistosta, deadlinea ja lisätietoja, sekä hakee päivämäärän. Palauttaa tiedon onnistumisesta.
 @app.route('/lisaa_tietokantaan', methods=['GET','POST'])
 def lisaa_tietokantaan():
     
@@ -348,15 +386,17 @@ def lisaa_tietokantaan():
     except:
         con.rollback()
         Response = make_response("ei toimi")
+        Response.charset = "UTF-8"
+        Response.mimetype = "text/plain"
         return Response
             
     con.commit()
     con.close()
 
-    resp = make_response("toimii")
-    resp.charset = "UTF-8"
-    resp.mimetype = "text/plain"
-    return resp
+    Response = make_response("toimii")
+    Response.charset = "UTF-8"
+    Response.mimetype = "text/plain"
+    return Response
 
 
 # Funktio joka saa poistaa saatua id:tä vastaavan viestin viestitietokannasta. Palauttaa tiedon onnistumisesta.    
@@ -373,15 +413,17 @@ def poista_tietokannasta():
     except:
         con.rollback()
         Response = make_response("ei toimi")
+        Response.charset = "UTF-8"
+        Response.mimetype = "text/plain"
         return Response
         
     con.commit()
     con.close()
 
-    resp = make_response("toimii")
-    resp.charset = "UTF-8"
-    resp.mimetype = "text/plain"
-    return resp
+    Response = make_response("toimii")
+    Response.charset = "UTF-8"
+    Response.mimetype = "text/plain"
+    return Response
     
 
 # Funktio joka tyhjentää chattietokannan kokonaan ja palauttaa tiedon onnistumisesta.    
@@ -396,15 +438,17 @@ def tyhjenna_chat():
     except:
         con.rollback()
         Response = make_response("ei toimi")
+        Response.charset = "UTF-8"
+        Response.mimetype = "text/plain"
         return Response
         
     con.commit()
     con.close()
 
-    resp = make_response("toimii")
-    resp.charset = "UTF-8"
-    resp.mimetype = "text/plain"
-    return resp
+    Response = make_response("toimii")
+    Response.charset = "UTF-8"
+    Response.mimetype = "text/plain"
+    return Response
 
 if __name__ == '__main__':
     app.debug = True
