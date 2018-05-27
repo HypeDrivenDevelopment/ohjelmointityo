@@ -1,10 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+# Samu Peltonen 28.5.2018
+# Tietokantakyselyitä ja muokkauksia suorittava ohjelma.
+
 from flask import Flask, session, redirect, url_for, escape, request, Response, render_template, make_response
 from datetime import date
 from datetime import timedelta
 from datetime import datetime
+import datetime
 import time
 import hashlib
 import sqlite3
@@ -34,7 +38,7 @@ def oikeudet():
     try:
         cur.execute('select Oikeus AS Oikeus from Oikeudet where Merkkijono=?', (encoded,))
     except:
-        Response = make_response("ei toimi")
+        Response = make_response("oikeudet ei toimi")
         Response.charset = "UTF-8"
         Response.mimetype = "text/plain"
         return Response
@@ -58,7 +62,7 @@ def oikeudet():
     return Response
     
     
-# Päivän viestin tietokannasta hakeva funktio, joka palauttaa viestin otsikkomuodossa.    
+# Päivän viestin tietokannasta hakeva funktio, joka palauttaa viestin merkkijonona otsikkotageilla.    
 @app.route('/hae_motd', methods=['GET','POST'])
 def hae_motd():
     
@@ -70,7 +74,7 @@ def hae_motd():
     try:
         cur.execute('select Viesti AS Viesti from motd')
     except:
-        Response = make_response("ei toimi")
+        Response = make_response("hae_motd ei toimi")
         Response.charset = "UTF-8"
         Response.mimetype = "text/plain"
         return Response
@@ -103,7 +107,7 @@ def lisaa_motd():
             
     except:
         con.rollback()
-        Response = make_response("ei toimi")
+        Response = make_response("lisaa_motd ei toimi")
         Response.charset = "UTF-8"
         Response.mimetype = "text/plain"
         return Response
@@ -117,7 +121,7 @@ def lisaa_motd():
     return Response  
 
  
-# Taulukkomuotoisen näkymän kuluvan viikon deadlineista hakeva funktio. 
+# Merkkijonon taulukkotageilla kuluvan viikon deadlineista hakeva funktio. 
 @app.route('/hae_viikko', methods=['GET','POST'])
 def hae_viikko():
 
@@ -141,7 +145,7 @@ def hae_viikko():
     try:
         cur.execute('select Viesti AS Viesti, Deadline AS Deadline from Viestit where Deadline is not null order by Deadline')
     except:
-        Response = make_response("ei toimi")
+        Response = make_response("hae_viikko ei toimi")
         Response.charset = "UTF-8"
         Response.mimetype = "text/plain"
         return Response
@@ -217,7 +221,7 @@ def poista_vanhat():
         con.execute('delete from Viestit WHERE Deadline<? and Poisto="True" and not Deadline=""', (week,)) 
     except:
         con.rollback()
-        Response = make_response("ei toimi")
+        Response = make_response("poista_vanhat ei toimi")
         Response.charset = "UTF-8"
         Response.mimetype = "text/plain"
         return Response
@@ -231,7 +235,7 @@ def poista_vanhat():
     return Response
 
 
-# Viestitietokannasta kaikki viestit hakeva funktio, joka syötteen perusteella palauttaa n-kappaletta uusinta viestiä listamuodossa.
+# Viestitietokannasta kaikki viestit hakeva funktio, joka syötteen perusteella palauttaa n-kappaletta uusinta viestiä merkkijonona listatageilla.
 @app.route('/hae_viestit', methods=['GET','POST'])
 def hae_viestit():
 
@@ -261,7 +265,7 @@ def hae_viestit():
         try:
             cur.execute('select Nimi AS Nimi, Viesti AS Viesti, ViestiID AS ViestiID, Paiva AS Paiva, Deadline AS Deadline, Lisatiedot AS Lisatiedot from Viestit order by ViestiID desc')
         except:
-            Response = make_response("ei toimi")
+            Response = make_response("hae_viestit ei toimi")
             Response.charset = "UTF-8"
             Response.mimetype = "text/plain"
             return Response
@@ -270,7 +274,7 @@ def hae_viestit():
         try:
             cur.execute("select Nimi AS Nimi, Viesti AS Viesti, ViestiID AS ViestiID, Paiva AS Paiva, Deadline AS Deadline, Lisatiedot AS Lisatiedot from Viestit where Viesti like ? order by ViestiID desc", ('%'+hakusana+'%',))
         except:
-            Response = make_response("ei toimi")
+            Response = make_response("hae_viestit ei toimi")
             Response.charset = "UTF-8"
             Response.mimetype = "text/plain"
             return Response
@@ -294,7 +298,7 @@ def hae_viestit():
     Response.mimetype = "text/plain"
     return Response
 
-# Chattietokannasta viestit hakeva funktio, joka palauttaa kaikki viestit taulukkomuodossa.    
+# Chattietokannasta viestit hakeva funktio, joka palauttaa kaikki viestit merkkijonona taulukkotageilla.    
 @app.route('/hae_chat', methods=['GET','POST'])
 def hae_chat():
 
@@ -306,7 +310,7 @@ def hae_chat():
     try:
         cur.execute('select Teksti AS Teksti, ChatID AS ChatID, Kayttaja AS Kayttaja from Chat order by ChatID') 
     except:
-        Response = make_response("ei toimi")
+        Response = make_response("hae_chat ei toimi")
         Response.charset = "UTF-8"
         Response.mimetype = "text/plain"
         return Response
@@ -346,7 +350,7 @@ def lisaa_chattietokantaan():
             
     except:
         con.rollback()
-        Response = make_response("ei toimi")
+        Response = make_response("lisaa_chattietokantaan ei toimi")
         Response.charset = "UTF-8"
         Response.mimetype = "text/plain"
         return Response
@@ -385,7 +389,7 @@ def lisaa_tietokantaan():
             
     except:
         con.rollback()
-        Response = make_response("ei toimi")
+        Response = make_response("lisaa_tietokantaan ei toimi")
         Response.charset = "UTF-8"
         Response.mimetype = "text/plain"
         return Response
@@ -412,7 +416,7 @@ def poista_tietokannasta():
         con.execute('DELETE FROM Viestit WHERE ViestiID=?', (id,))
     except:
         con.rollback()
-        Response = make_response("ei toimi")
+        Response = make_response("poista_tietokannasta ei toimi")
         Response.charset = "UTF-8"
         Response.mimetype = "text/plain"
         return Response
@@ -437,7 +441,7 @@ def tyhjenna_chat():
         con.execute('DELETE FROM Chat')
     except:
         con.rollback()
-        Response = make_response("ei toimi")
+        Response = make_response("tyhjenna_chat ei toimi")
         Response.charset = "UTF-8"
         Response.mimetype = "text/plain"
         return Response

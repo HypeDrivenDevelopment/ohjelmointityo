@@ -20,13 +20,13 @@ Deadline DATE,
 Lisatiedot VARCHAR(100)
 );
 
-INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto, Deadline, Lisatiedot) VALUES ('Admin', 'Ensimmainen entry', '2018-05-10', 'FALSE', '', 'jotain');
-INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto, Deadline, Lisatiedot) VALUES ('Admin', 'Toinen entry', '2018-05-10', 'FALSE', '', 'jotain2');
-INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto, Deadline, Lisatiedot) VALUES ('Jorma', 'asd', '2018-05-10', 'TRUE', '', 'jotain3');
-INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto, Deadline, Lisatiedot) VALUES ('Jarmo', 'fgh', '2018-05-10', 'TRUE', '', '');
-INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto, Deadline, Lisatiedot) VALUES ('Paavo', 'jkl', '2018-05-10', 'TRUE', '', '');
-INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto, Deadline, Lisatiedot) VALUES ('Paavo', 'jkl', '2018-05-10', 'TRUE', '2018-05-13', '');
-INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto, Deadline, Lisatiedot) VALUES ('Paavo', 'jkl', '2018-05-10', 'TRUE', '2018-05-12', 'juumeinaa');
+INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto, Deadline, Lisatiedot) VALUES ('Admin', 'Ensimmainen entry', '2018-05-27', 'FALSE', '', 'jotain');
+INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto, Deadline, Lisatiedot) VALUES ('Admin', 'Toinen entry', '2018-05-27', 'FALSE', '', 'jotain2');
+INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto, Deadline, Lisatiedot) VALUES ('Pekka', 'Kolmas entry', '2018-05-27', 'FALSE', '', 'jotain3');
+INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto, Deadline, Lisatiedot) VALUES ('Pekka', 'Lorem ipsum dolor', '2018-05-27', 'FALSE', '', 'sit amet');
+INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto, Deadline, Lisatiedot) VALUES ('Admin', 'consectetur adipiscing', '2018-05-27', 'FALSE', '', 'elit, sed do eiusmod tempor');
+INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto, Deadline, Lisatiedot) VALUES ('Pekka', 'incididunt ut labore', '2018-05-27', 'TRUE', '2018-05-31', '');
+INSERT INTO Viestit (Nimi, Viesti, Paiva, Poisto, Deadline, Lisatiedot) VALUES ('Admin', 'et dolore magna aliqua', '2018-05-27', 'TRUE', '2018-05-30', 'Ut enim ad');
 
 CREATE TABLE Chat (
 ChatID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -34,11 +34,11 @@ Teksti VARCHAR(50) NOT NULL,
 Kayttaja VARCHAR(50) NOT NULL
 );
 
-INSERT INTO Chat (Teksti, Kayttaja) VALUES ('Haloo', 'Jarmo');
-INSERT INTO Chat (Teksti, Kayttaja) VALUES ('Mitas', 'Pekka');
-INSERT INTO Chat (Teksti, Kayttaja) VALUES ('hoi', 'Admin');
+INSERT INTO Chat (Teksti, Kayttaja) VALUES ('Haloo', 'Admin');
+INSERT INTO Chat (Teksti, Kayttaja) VALUES ('Terve', 'Pekka');
 INSERT INTO Chat (Teksti, Kayttaja) VALUES ('asdf', 'Admin');
-INSERT INTO Chat (Teksti, Kayttaja) VALUES ('123123', 'Jorma');
+INSERT INTO Chat (Teksti, Kayttaja) VALUES ('asdf', 'Admin');
+INSERT INTO Chat (Teksti, Kayttaja) VALUES ('123123', 'Pekka');
 
 CREATE TABLE Oikeudet (
 OikeusID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -54,4 +54,4 @@ ViestiID INTEGER PRIMARY KEY AUTOINCREMENT,
 Viesti VARCHAR(100) NOT NULL
 );
 
-INSERT INTO Motd (Viesti) VALUES ('Testi');
+INSERT INTO Motd (Viesti) VALUES ('Tervehdys');

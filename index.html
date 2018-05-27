@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
+		<meta name="author" content="Samu Peltonen">
 		<title>Viestintäjärjestelmä</title> 
 		<link href="tyyli.css" rel="StyleSheet" type="text/css" />
 		<script type="text/javascript" src="jquery-3.2.1.js"></script>
@@ -25,6 +26,10 @@
 
 						<label for="salasana">Salasana: </label>
 						<input type="password" id="salasana" name="salasana"/>
+						
+						<p id="virheellinen" class="hidden">
+							Virheellinen käyttäjätunnus tai salasana!
+						</p>
 
 					</div>
 					<p><input type="submit" name="kirjaudu" id="kirjaudu" value="Kirjaudu!" /></p>
@@ -111,7 +116,7 @@
 					<div>
 
 						<label for="message">Viesti: </label>
-						<input type="text" id="message" name="massage"/>
+						<input type="text" id="message" name="message"/>
 
 					</div>
 					<p><input type="submit" name="send" id="send" value="Lähetä!" /></p>

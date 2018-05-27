@@ -1,3 +1,6 @@
+// Samu Peltonen 28.5.2018
+// Sivuston toiminnallisuutta ja tiedonvälitystä hoitava tiedosto.
+
 window.onload = function() {
 
 	$("#kirjaudu").on("click", tarkasta_oikeudet);
@@ -96,7 +99,9 @@ function kirjautumisen_tarkistus (data, textStatus, request) {
 		$('#sisalto').removeClass('hidden');
 	}
 	
-	console.log( data );
+	if (data == "false"){
+		$('#virheellinen').removeClass('hidden');
+	}
 	
 }
 
@@ -140,8 +145,9 @@ function chatajastin() {
 /*
 Funktio joka ilmoittaa käyttäjälle ettei hänellä ole riittäviä oikeuksia toiminnon käyttämiseen.
 */
-function ei_oikeuksia() {
-	console.log("ei oikeuksia");
+function ei_oikeuksia(e) {
+	e.preventDefault();
+	alert("Vaatii admin oikeudet");
 }
 
 /*
@@ -265,8 +271,7 @@ Funktio joka hakee klikatun viestielementin ID:n ja välittää sen ajaxilla ete
 */
 function poista_tietokannasta(e) {
 	apuid = $(this).attr("id");
-	console.log(apuid);
-
+	
 	$.ajax({
         async: true,
         url: "/~samipelt/cgi-bin/ohjelmointityo/flask.cgi/poista_tietokannasta",
@@ -332,7 +337,6 @@ function lisaa_tietokantaan(e) {
 	check = true;
 	}
 
-	console.log( check );
 	$.ajax({
         async: true,
         url: "/~samipelt/cgi-bin/ohjelmointityo/flask.cgi/lisaa_tietokantaan",
@@ -352,12 +356,10 @@ function lisaa_tietokantaan(e) {
 }
 
 function tyhjennys_onnistui(data, textStatus, request) {
-	console.log( data );
 	hae_chat();
 }
 
 function lisaaminen_onnistui(data, textStatus, request) {
-	console.log( data );
 	$("#viesti").val(null);
 	$("#deadline").val(null);
 	$("#lisatiedot").val(null);
@@ -366,41 +368,34 @@ function lisaaminen_onnistui(data, textStatus, request) {
 }
 
 function chatlisaaminen_onnistui(data, textStatus, request) {
-	console.log( data );
 	$("#message").val(null);
 	hae_chat();
 }
 
 function motdlisaaminen_onnistui(data, textStatus, request) {
-	console.log( data );
 	hae_motd();
 }
 
 function poistaminen_onnistui(data, textStatus, request) {
-	console.log( data );
 	hae_viestit();
 	hae_kalenteri();
 }
 
 function lisaa_viestit(data, textStatus, request) {
 	$('#taulu').replaceWith( data );
-	console.log( data );
 	$(".poista").on("click", poista_tietokannasta);
 }
 
 function lisaa_chat(data, textStatus, request) {
 	$('#chatviestit').replaceWith( data );
-	console.log( data );
 }
 
 function paivita_motd(data, textStatus, request) {
 	$('#motdteksti').replaceWith( data );
-	console.log( data );
 }
 
 function lisaa_kalenteri(data, textStatus, request) {
 	$('#kalenteri').replaceWith( data );
-	console.log( data );
 }
 
 function ajax_virhe(xhr, status, error) {

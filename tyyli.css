@@ -8,17 +8,17 @@ h2 {
 }
 
 li {
-	margin-bottom: 1em;
-	background-color: LightGrey;
+  margin-bottom: 1em;
+  background-color: LightGrey;
 }
 
 table#chatviestit td {
-	display:block;
+  display:block;
 }
 
 table#kalenteri td {
-	border: medium solid black;
-	width: 12em;
+  border: medium solid black;
+  width: 12em;
 }
 
 .hidden {
@@ -29,11 +29,13 @@ table#kalenteri td {
   position:relative;
   width: 20em;
 }
+
 #scroll {
   height: 200px;
   overflow:auto;  
   margin-top:20px;
 }
+
 #wrapper table {
   width:100%;
 
