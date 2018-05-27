@@ -189,7 +189,7 @@ def hae_viikko():
         i += 1
     
     # Jos viikossa ei ollut deadlineja loppuviikosta tai koko viikkona niin täydennetään sinne kuitenkin tyhjiä soluja.
-    if i < 6:
+    if i < 7:
         erotus = 7 - i
         while erotus > 0:
             viikko = viikko + "<td>""</td>"
